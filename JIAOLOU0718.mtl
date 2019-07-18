@@ -11,7 +11,7 @@ Ks 0.329412 0.329412 0.329412
 Tr 1.000000
 d 1.000000
 Ns 0.000000
-map_Kd C:\Users\Nan\Desktop\明信片\角楼\导出\JIAOLOU0718\Rectangles_Running_2x1.png
+map_Kd JIAOLOU0718\Rectangles_Running_2x1.png
 
 newmtl Fencing_Mesh_Blue
 Ka 0.000000 0.000000 0.000000
@@ -20,7 +20,7 @@ Ks 0.329412 0.329412 0.329412
 Tr 1.000000
 d 1.000000
 Ns 0.000000
-map_Kd C:\Users\Nan\Desktop\明信片\角楼\导出\JIAOLOU0718\Fencing_Mesh_Blue.png
+map_Kd JIAOLOU0718\Fencing_Mesh_Blue.png
 
 newmtl Color_M04
 Ka 0.000000 0.000000 0.000000
@@ -77,7 +77,7 @@ Ks 0.329412 0.329412 0.329412
 Tr 1.000000
 d 1.000000
 Ns 0.000000
-map_Kd C:\Users\Nan\Desktop\明信片\角楼\导出\JIAOLOU0718\Black_Lines_2.png
+map_Kd JIAOLOU0718\Black_Lines_2.png
 
 newmtl FrontColor
 Ka 0.000000 0.000000 0.000000
