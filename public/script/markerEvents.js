@@ -1,4 +1,4 @@
-import { init } from './gltfModel';
+// import { init } from 'gltfModel.js';
 
 window.addEventListener('camera-init', (data) => {
     console.log('camera-init', data);
@@ -13,7 +13,7 @@ AFRAME.registerComponent('registerevents', {
         marker.addEventListener('markerFound', function() {
             var markerId = marker.id;
             console.log('markerFound', markerId);
-            init();
+            //init();
             // TODO: Add your own code here to react to the marker being found.
         });
         marker.addEventListener('markerLost', function() {
