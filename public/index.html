@@ -22,7 +22,7 @@
   <script src="./js/aframe-v0.9.2.min.js"></script>
   <script src="./js/aframe-ar.min.js"></script>
   <script type="module">
-    import { GLTFLoader } from '../js/libs/GLTFLoader.js';
+    import { GLTFLoader } from './js/libs/GLTFLoader.js';
     import { initScene, updateScene } from './script/threejsScene.js';
     AFRAME.registerComponent('registerevents', {
       init: function () {
@@ -58,7 +58,7 @@
             marker.object3D.getWorldScale(scale);
             console.log("marker" + JSON.stringify(position));
             console.log("marker" + JSON.stringify(scale));
-            // gltf.scene.position.set(new THREE.Vector3(0,0,0));
+            gltf.scene.position.set(0,0.8,0);
             //gltf.scene.scale.set(scale);
             // gltf.scene.quaternion.set(marker.object3D.getWorldQuaternion());
             gltf.scene.name = "model";
