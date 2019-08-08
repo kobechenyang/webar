@@ -53,8 +53,8 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <a-scene embedded arjs='cameraParametersUrl:./data/camera_para.dat; sourceType: video; sourceUrl:./videos/headtracking.mp4;' antialias='true' renderer='logarithmicDepthBuffer: true;'>
-	  <!-- <a-scene embedded arjs='sourceType: webcam'> -->
+    <a-scene embedded arjs='cameraParametersUrl:./data/camera_para.dat; sourceType: webcam;' antialias='true' renderer='logarithmicDepthBuffer: true;'>
+	  <!-- <a-scene embedded arjs='sourceType: video; sourceUrl:./videos/headtracking.mp4;> -->
       <a-entity light="type: hemisphere; color: #FFFFFF, groundColor: #9797A0; intensity: 0.8"></a-entity>
       <a-entity light="type: directional;castShadow:true; color: #FFFFFF; intensity: 1.2" position="0.289 1 0.5"></a-entity>
       <a-marker preset='kanji 'id='marker-kanji'>
