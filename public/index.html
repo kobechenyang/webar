@@ -31,8 +31,7 @@
 
         marker.addEventListener('markerFound', function () {
           var markerId = marker.id;
-          if(markerId!=='marker-kanji')
-            return;
+          return;
           console.log('markerFound', markerId);
           var sceneEl = document.querySelector('a-scene');
 
@@ -58,39 +57,14 @@
             console.log("marker" + JSON.stringify(position));
             console.log("marker" + JSON.stringify(scale));
             gltf.scene.position.set(0,0.8,0);
-            //gltf.scene.scale.set(scale);
-            // gltf.scene.quaternion.set(marker.object3D.getWorldQuaternion());
+            
             gltf.scene.name = "model";
             marker.object3D.add(gltf.scene);
             var model = marker.object3D.getObjectByName("model");
-            // console.log(model);
-            // var m = new THREE.Matrix4();
-            // sceneEl.object3D.updateWorldMatrix( true, false );
-
-            // m.getInverse( sceneEl.object3D.matrixWorld );
-
-            // if ( model.parent !== null ) {
-
-            //   model.parent.updateWorldMatrix( true, false );
-
-            //   m.multiply( model.parent.matrixWorld );
-
-            // }
-
-            // model.applyMatrix( m );
-
-            // model.updateWorldMatrix( false, false );
+        
             model.applyMatrix( marker.object3D.matrixWorld );
             marker.object3D.remove( model );
             sceneEl.object3D.add( model );
-            // model.position.set(0, 0.1, -2);
-            // var pos = new THREE.Vector3();
-            // model.getWorldPosition(pos);
-            // var s = new THREE.Vector3();
-            // model.getWorldScale(s);
-            // console.log("model " + JSON.stringify(pos));
-            // console.log("model " + JSON.stringify(s));
-            // TODO: Add your own code here to react to the marker being found.
           });
           
         });
@@ -123,7 +97,7 @@
     <a-entity light="type: directional;castShadow:true; color: #FFFFFF; intensity: 1.2" position="0.289 1 0.5">
     </a-entity>
     <a-marker preset='kanji ' id='marker-kanji'>
-      <!-- <a-entity gltf-model="url(./model/2019_08_05_153101_lowresmap/scene.gltf)"></a-entity> -->
+      <a-entity gltf-model="url(./model/2019_08_05_153101_lowresmap/scene.gltf)"></a-entity>
       <!-- <a-box position='0 0 0' material='opacity: 0.5; side: double;color:green;'>
           <a-torus-knot radius='0.26' radius-tubular='0.05'
           animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
