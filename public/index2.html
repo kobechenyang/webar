@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>three.js webgl - glTF loader</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <title>React App</title>
+  <!-- if you want to use the hosted libs from CDN network uncomment those lines
+    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.2/aframe/build/aframe-ar.js"></script> -->
+  <!-- aframe.js and aframe-ar.js in public folder -->
+  <script src="./js/aframe-v0.9.2.min.js"></script>
+  <script src="./js/aframe-ar.min.js"></script>
+  <script type="module">
+    import { GLTFLoader } from './js/libs/GLTFLoader.js';
+    AFRAME.registerComponent('registerevents', {
+      init: function () {
+        console.log('init');
+        //initScene();
+        var marker = this.el;
+
+        marker.addEventListener('markerFound', function () {
+          var markerId = marker.id;
+          return;
+          console.log('markerFound', markerId);
+          var sceneEl = document.querySelector('a-scene');
+
+          var entityEl = document.createElement('a-entity');
+          //this.el.setAttribute(‘gltf-model’, ‘url(‘ + this.data.modelUrl + ‘)’);
+
+          // var model = sceneEl.object3D.getObjectByName("model");
+
+          var loader = new GLTFLoader().setPath('./model/2019_08_05_153101_lowresmap/');
+
+          loader.load('scene.gltf', function (gltf) {
+            gltf.scene.traverse(function (child) {
+              if (child.isMesh) {
+                // child.castShadow = true;
+                // child.receiveShadow = true;
+              }
+            });
+
+            var position = new THREE.Vector3();
+            marker.object3D.getWorldPosition(position);
+            var scale = new THREE.Vector3();
+            marker.object3D.getWorldScale(scale);
+            console.log("marker" + JSON.stringify(position));
+            console.log("marker" + JSON.stringify(scale));
+            gltf.scene.position.set(0,0.8,0);
+            
+            gltf.scene.name = "model";
+            marker.object3D.add(gltf.scene);
+            var model = marker.object3D.getObjectByName("model");
+        
+            model.applyMatrix( marker.object3D.matrixWorld );
+            marker.object3D.remove( model );
+            sceneEl.object3D.add( model );
+          });
+          
+        });
+        marker.addEventListener('markerLost', function () {
+          var markerId = marker.id;
+          console.log('markerLost', markerId);
+          // TODO: Add your own code here to react to the marker being lost.
+        });
+      },
+      update: function () {
+        //updateScene();
+      },
+      tick: function (time, timeDelta) {
+
+      }
+    });
+    var markers = document.querySelectorAll('a-marker');
+    markers.forEach((marker) => {
+      marker.setAttribute('registerevents', '');
+    });
+  </script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <a-scene stats embedded arjs='cameraParametersUrl:./data/camera_para.dat; sourceType: webcam;' antialias='true'
+    renderer='logarithmicDepthBuffer: true;'>
+    <!-- <a-scene embedded arjs='sourceType: video; sourceUrl:./videos/headtracking.mp4;> -->
+    <a-entity light="type: hemisphere; color: #FFFFFF, groundColor: #9797A0; intensity: 0.8"></a-entity>
+    <a-entity light="type: directional;castShadow:true; color: #FFFFFF; intensity: 1.2" position="0.289 1 0.5">
+    </a-entity>
+    <a-marker preset='hiro' id='marker-kanji'>
+      <a-entity gltf-model="url(./model/2019_08_09_140618/scene.gltf)" scale='2 2 2'></a-entity>
+      <!-- <a-box position='0 0 0' material='opacity: 0.5; side: double;color:green;'>
+          <a-torus-knot radius='0.26' radius-tubular='0.05'
+          animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
+          </a-torus-knot>
+        </a-box> -->
+    </a-marker>
+    <a-marker preset='kanji' id='marker-hiro'>
+        <!-- <a-entity gltf-model="url(./model/2019_08_05_153101_lowresmap/scene.gltf)"></a-entity> -->
+        <a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:green;'>
+            <a-torus-knot radius='0.26' radius-tubular='0.05'
+            animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
+            </a-torus-knot>
+        </a-box>
+      </a-marker>
+
+    <!-- add a simple camera -->
+    <a-entity camera="far:1000; near:0.01"></a-entity>
+  </a-scene>
+
+  <div id="root"></div>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+</body>
+
+</html>

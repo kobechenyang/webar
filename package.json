@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http-server": "^0.11.1"
+    "http-server": "^0.11.1",
+    "threear": "^1.0.0-alpha.5"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"
