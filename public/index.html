@@ -21,6 +21,8 @@
 				antialias: true,
 				alpha: true
 			});
+			renderer.shadowMap.type = THREE.PCFSoftShadowMap
+            renderer.shadowMap.enabled = true;
 			// renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 			// renderer.setPixelRatio( 2 );
 			renderer.setPixelRatio(window.devicePixelRatio);
@@ -63,7 +65,7 @@
 				var patternMarker = new THREEAR.PatternMarker({
 					patternUrl: './data/patt.hiro',
 					markerObject: markerGroup,
-					minConfidence: 0.3
+					minConfidence: 0.2
 				});
 
 				controller.trackMarker(patternMarker);
