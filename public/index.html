@@ -21,12 +21,10 @@
 				antialias: true,
 				alpha: true
 			});
-			renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+			// renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 			// renderer.setPixelRatio( 2 );
+			renderer.setPixelRatio(window.devicePixelRatio);
 			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.domElement.style.position = 'absolute'
-			renderer.domElement.style.top = '0px'
-			renderer.domElement.style.left = '0px'
 			document.body.appendChild( renderer.domElement );
 		
 			// init scene and camera
@@ -45,7 +43,7 @@
 		
 			var source = new THREEAR.Source({ renderer, camera });
 
-			THREEAR.initialize({ source: source, lostTimeout: 10000 }).then((controller) => {
+			THREEAR.initialize({ source: source, lostTimeout: 100000 }).then((controller) => {
 
         var loader = new GLTFLoader().setPath('./model/2019_08_09_140618/');
 
