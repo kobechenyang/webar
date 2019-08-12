@@ -1,103 +1,76 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-	<head>
-		<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
-		<script src="./js/three.min.js"></script>	
-		<script src="./js/THREEAR.js"></script>
-		<title>THREE AR Basic Pattern Marker Demo</title>
-		<!-- Bind window error for error handling -->
-		<script>
-			// window.addEventListener('error', function(event) {
-			// 	alert("ERROR: " + event.message + " at " + event.filename + " : " + event.lineno + " : " + event.colno);
-			// });
-		</script>
-	</head>
+<head>
+  <title>three.js webgl - glTF loader</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
 
-	<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
-		<script type = "module">
-			import { GLTFLoader } from './js/libs/GLTFLoader.js';
-			var renderer = new THREE.WebGLRenderer({
-				antialias: true,
-				alpha: true
-			});
-			renderer.shadowMap.type = THREE.PCFSoftShadowMap
-            renderer.shadowMap.enabled = true;
-			// renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-			// renderer.setPixelRatio( 2 );
-			renderer.setPixelRatio(window.devicePixelRatio);
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
-		
-			// init scene and camera
-			var scene = new THREE.Scene();
-			var camera = new THREE.Camera();
-			scene.add(camera);
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <title>React App</title>
+  <!-- if you want to use the hosted libs from CDN network uncomment those lines
+    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.2/aframe/build/aframe-ar.js"></script> -->
+  <!-- aframe.js and aframe-ar.js in public folder -->
+  <script src="./js/aframe-v0.9.2.min.js"></script>
+  <script src="./js/aframe-ar.min.js"></script>
 
-			var markerGroup = new THREE.Group();
-			scene.add(markerGroup);
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <a-scene stats embedded arjs='cameraParametersUrl:./data/camera_para.dat; sourceType: webcam;' antialias='true'
+    renderer='logarithmicDepthBuffer: true;'>
+    <!-- <a-scene embedded arjs='sourceType: video; sourceUrl:./videos/headtracking.mp4;> -->
+    <a-entity light="type: hemisphere; color: #FFFFFF, groundColor: #9797A0; intensity: 0.8"></a-entity>
+    <a-entity light="type: directional;castShadow:true; color: #FFFFFF; intensity: 1.2" position="0.289 1 0.5">
+    </a-entity>
+    <!-- <a-marker preset='custom' type='pattern' url='./data/pattern-512.patt' id='marker-custom'>
+      <a-entity gltf-model="url(./model/2019_08_09_140618/scene.gltf)" scale='2 2 2'></a-entity>
+    </a-marker> -->
+    <a-marker preset='custom' type='pattern' url='./data/pattern-white.patt' id='marker-custom'>
+      <a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:green;'>
+          <a-torus-knot radius='0.26' radius-tubular='0.05'
+          animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
+          </a-torus-knot>
+      </a-box>
+    </a-marker>
+    <a-marker preset='custom' type='pattern' url='./data/pattern-512.patt' id='marker-custom'>
+      <a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:green;'>
+          <a-torus-knot radius='0.26' radius-tubular='0.05'
+          animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
+          </a-torus-knot>
+      </a-box>    
+    </a-marker>
+    <a-marker preset='hiro' id='marker-hiro'>
+        <!-- <a-entity gltf-model="url(./model/2019_08_05_153101_lowresmap/scene.gltf)"></a-entity> -->
+        <a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:green;'>
+            <a-torus-knot radius='0.26' radius-tubular='0.05'
+            animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
+            </a-torus-knot>
+        </a-box>
+      </a-marker>
 
-			var light = new THREE.HemisphereLight( 0xffffff, 0x9797A0, 1.3 );
-			scene.add(light);
-			var directionalLight = new THREE.DirectionalLight( 0xffffff, 1, 100 );
-			directionalLight.position.set(0.289, 0.5, 1);
-			directionalLight.castShadow = true;   
-		
-			var source = new THREEAR.Source({ renderer, camera });
+    <!-- add a simple camera -->
+    <a-entity camera="far:1000; near:0.01"></a-entity>
+  </a-scene>
 
-			THREEAR.initialize({ source: source, lostTimeout: 100000 }).then((controller) => {
+  <div id="root"></div>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-        var loader = new GLTFLoader().setPath('./model/2019_08_09_140618/');
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-          loader.load('scene.gltf', function (gltf) {
-            gltf.scene.traverse(function (child) {
-              if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-              }
-            });
-            gltf.scene.position.set(0,0,0);
-            gltf.scene.scale.set(2, 2, 2);
-            gltf.scene.name = "model";
-            markerGroup.add(gltf.scene);
-          });
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+</body>
 
-				var patternMarker = new THREEAR.PatternMarker({
-					patternUrl: './data/patt.hiro',
-					markerObject: markerGroup,
-					minConfidence: 0.2
-				});
-
-				controller.trackMarker(patternMarker);
-
-				// controller.addEventListener('markerFound', function(event) {
-				// 	console.log('markerFound', event);
-				// });
-
-				// controller.addEventListener('markerLost', function(event) {
-				// 	console.log('markerLost', event);
-				// });
-
-				// run the rendering loop
-				var lastTimeMsec = 0;
-				requestAnimationFrame(function animate(nowMsec){
-					// keep looping
-					requestAnimationFrame( animate );
-					// measure time
-					lastTimeMsec = lastTimeMsec || nowMsec-1000/60;
-					var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
-					lastTimeMsec = nowMsec;
-					// call each update function
-					controller.update( source.domElement );
-					// cube.rotation.x += deltaMsec/10000 * Math.PI
-					// torus.rotation.y += deltaMsec/1000 * Math.PI
-					// torus.rotation.z += deltaMsec/1000 * Math.PI
-					renderer.render( scene, camera );
-				});
-
-			});
-
-		</script>
-	</body>
-	
 </html>
