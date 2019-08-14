@@ -1,6 +1,6 @@
 https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/learner.html?
 {
-    "backURL":"https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/player.html#%7B%22trackingBackend%22%3A%22artoolkit%22%7D",
+    "backURL":"https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/player.html#{"trackingBackend":"artoolkit"}",
     "trackingBackend":"artoolkit",
     "markersControlsParameters":
     [
@@ -14,4 +14,12 @@ https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/l
     ]
 }
 
-//hit pause then localStorage.getItem('ARjsMultiMarkerFile');
+after encoding, delete  "backURL":"https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/player.html#{"trackingBackend":"artoolkit"}",
+https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/learner.html?
+%7B%22trackingBackend%22%3A%22artoolkit%22%2C%22markersControlsParameters%22%3A%5B%7B%22type%22%3A%22pattern%22%2C%22patternUrl%22%3A%22https%3A%2F%2Fjeromeetienne.github.io%2FAR.js%2Fthree.js%2Fexamples%2Fmarker-training%2Fexamples%2Fpattern-files%2Fpattern-letterA.patt%22%7D%2C%7B%22type%22%3A%22pattern%22%2C%22patternUrl%22%3A%22https%3A%2F%2Fjeromeetienne.github.io%2FAR.js%2Fthree.js%2Fexamples%2Fmarker-training%2Fexamples%2Fpattern-files%2Fpattern-letterB.patt%22%7D%2C%7B%22type%22%3A%22pattern%22%2C%22patternUrl%22%3A%22https%3A%2F%2Fjeromeetienne.github.io%2FAR.js%2Fthree.js%2Fexamples%2Fmarker-training%2Fexamples%2Fpattern-files%2Fpattern-letterC.patt%22%7D%2C%7B%22type%22%3A%22pattern%22%2C%22patternUrl%22%3A%22https%3A%2F%2Fjeromeetienne.github.io%2FAR.js%2Fthree.js%2Fexamples%2Fmarker-training%2Fexamples%2Fpattern-files%2Fpattern-letterD.patt%22%7D%2C%7B%22type%22%3A%22pattern%22%2C%22patternUrl%22%3A%22https%3A%2F%2Fjeromeetienne.github.io%2FAR.js%2Fthree.js%2Fexamples%2Fmarker-training%2Fexamples%2Fpattern-files%2Fpattern-letterG.patt%22%7D%2C%7B%22type%22%3A%22pattern%22%2C%22patternUrl%22%3A%22https%3A%2F%2Fjeromeetienne.github.io%2FAR.js%2Fthree.js%2Fexamples%2Fmarker-training%2Fexamples%2Fpattern-files%2Fpattern-letterF.patt%22%7D%5D%7D
+
+loading on the phone
+hit pause then connect iphone to mac,
+open safari develop console:
+
+localStorage.getItem('ARjsMultiMarkerFile');
