@@ -1,0 +1,17 @@
+https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/learner.html?
+{
+    "backURL":"https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/player.html#%7B%22trackingBackend%22%3A%22artoolkit%22%7D",
+    "trackingBackend":"artoolkit",
+    "markersControlsParameters":
+    [
+        {"type":"pattern","patternUrl":"https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/pattern-files/pattern-letterA.patt"},
+        {"type":"pattern","patternUrl":"https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/pattern-files/pattern-letterB.patt"},
+        {"type":"pattern","patternUrl":"https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/pattern-files/pattern-letterC.patt"},
+        {"type":"pattern","patternUrl":"https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/pattern-files/pattern-letterD.patt"},
+        {"type":"pattern","patternUrl":"https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/pattern-files/pattern-letterG.patt"},
+        {"type":"pattern","patternUrl":"https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/pattern-files/pattern-letterF.patt"}
+        
+    ]
+}
+
+//hit pause then localStorage.getItem('ARjsMultiMarkerFile');
