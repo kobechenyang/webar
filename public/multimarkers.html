@@ -1,0 +1,42 @@
+<html>
+<head>
+  <title>
+    Multimarker Demo
+  </title>
+  <meta name="Multimarker Demo" >
+  <script>   //Loads multimarker file to localstorage otherwise the area preset will only look for hiro alone
+  var a = window.location.toString();
+  var file = a.substring(a.indexOf("?") + 1);
+      var xobj = new XMLHttpRequest();
+            xobj.overrideMimeType("application/json");
+            if(file==a){
+              xobj.open('GET', 'ARjsMultiMarkerFile', true); // 
+            }
+            else{
+              xobj.open('GET', file, true); // 
+            }
+          xobj.onreadystatechange = function () { 
+      if (xobj.readyState == 4 && xobj.status == "200") {
+        localStorage.setItem('ARjsMultiMarkerFile',xobj.responseText);
+        }};
+        xobj.send();
+            </script>
+  <script src="./js/aframe-v0.9.2.min.js"></script>
+  <script src="./js/aframe-ar.js"></script>
+</head>
+
+
+<body style='margin : 0px; overflow: hidden;'>
+    <a-scene stats embedded arjs='cameraParametersUrl:./data/camera_para.dat; sourceType: webcam; detectionMode: mono; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960;' antialias='true'
+        renderer='logarithmicDepthBuffer: true;' vr-mode-ui='enabled: false'>
+      <a-marker preset="area" smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
+            <a-box position='2.1 0.5 2.3' scale='5 5 5' material='opacity: 0.5; side: double;color:green;'>
+                    <a-torus-knot radius='0.26' radius-tubular='0.05'
+                    animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
+                    </a-torus-knot>
+                </a-box> 
+        </a-marker>
+        <a-entity camera="far:100; near:0.01"></a-entity>
+      </a-scene>
+</body>
+</html>
