@@ -39,14 +39,14 @@
 
 			var light = new THREE.HemisphereLight( 0xffffff, 0x9797A0, 1 );
 			scene.add(light);
-			// var directionalLight = new THREE.DirectionalLight( 0xffffff, 2, 100 );
-			// directionalLight.position.set(0.289, 0.5, 1).setLength(5);
-			// directionalLight.castShadow = true;   
-			// directionalLight.shadow.mapSize.width = 2048;  // default
-			// directionalLight.shadow.mapSize.height = 2048; // default
-			// directionalLight.shadow.camera.near = 0.5;       // default
-			// directionalLight.shadow.camera.far = 100      // default
-			// scene.add(directionalLight);
+			var directionalLight = new THREE.DirectionalLight( 0xffffff, 2, 100 );
+			directionalLight.position.set(0.289, 0.5, 1).setLength(5);
+			directionalLight.castShadow = true;   
+			// directionalLight.shadow.mapSize.width = 2048;  
+			// directionalLight.shadow.mapSize.height = 2048; 
+			// directionalLight.shadow.camera.near = 0.5;      
+			// directionalLight.shadow.camera.far = 100      
+			scene.add(directionalLight);
 
 		
 			var source = new THREEAR.Source({ renderer, camera });
