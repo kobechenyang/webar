@@ -39,13 +39,13 @@
 
 			var light = new THREE.HemisphereLight( 0xffffff, 0x9797A0, 1 );
 			scene.add(light);
-			var directionalLight = new THREE.DirectionalLight( 0xffffff, 2, 100 );
+			var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.5, 100 );
 			directionalLight.position.set(0.289, 0.5, 1).setLength(5);
-			directionalLight.castShadow = true;   
-			// directionalLight.shadow.mapSize.width = 2048;  
-			// directionalLight.shadow.mapSize.height = 2048; 
-			// directionalLight.shadow.camera.near = 0.5;      
-			// directionalLight.shadow.camera.far = 100      
+			directionalLight.castShadow = true;  
+			directionalLight.shadow.mapSize.width = 1024;  
+			directionalLight.shadow.mapSize.height = 1024; 
+			directionalLight.shadow.camera.near = 0.01;      
+			directionalLight.shadow.camera.far = 100;   
 			scene.add(directionalLight);
 
 		
@@ -53,9 +53,9 @@
 
 			THREEAR.initialize({ source: source, lostTimeout: 100000 }).then((controller) => {
 
-        var loader = new GLTFLoader().setPath('./model/2019_08_12_162356/');
+        var loader = new GLTFLoader().setPath('./model/jiaolou/');
 
-          loader.load('scene.gltf', function (gltf) {
+          loader.load('2019_08_08_135350_position_recolor.gltf', function (gltf) {
 			var objs = [];
             gltf.scene.traverse(function (child) {
 				
@@ -70,7 +70,7 @@
 			  }
             });
             gltf.scene.position.set(0,0,0);
-            gltf.scene.scale.set(2, 2, 2);
+            gltf.scene.scale.set(0.01, 0.01, 0.01);
 			gltf.scene.name = "model";
 			//for(var obj in objs){
 			markerGroup.add(gltf.scene);
@@ -83,16 +83,15 @@
                 torus.castShadow = true;
 				torus.receiveShadow = true;
 				// torus.position.set(1,0,-5);
-                //markerGroup.add(torus);
+            //   markerGroup.add(torus);
                 
-		// 	var planeMaterial = new THREE.ShadowMaterial({ opacity: 0.7 });
-        //         var planeGeometry = new THREE.PlaneGeometry(3, 3)
-        //         var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-        //         planeMesh.receiveShadow = true;
-        //         planeMesh.depthWrite = false;
-		// 		planeMesh.rotation.x = -Math.PI/2;
-		// 		planeMesh.position.set(-1,0,-5);
-        //         scene.add(planeMesh);
+			var planeMaterial = new THREE.ShadowMaterial({ opacity: 0.7 });
+                var planeGeometry = new THREE.PlaneGeometry(3, 3)
+                var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+                planeMesh.receiveShadow = true;
+                planeMesh.depthWrite = false;
+				planeMesh.rotation.x = -Math.PI/2;
+                markerGroup.add(planeMesh);
 		  });
 		  
 		  
