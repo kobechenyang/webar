@@ -103,11 +103,11 @@
 			gltf.scene.name = "model";
 			//for(var obj in objs){
 				
-				mixer = new THREE.AnimationMixer( gltf.scene );
-				gltf.animations.forEach(( clip ) => {
-					console.log('animation ' + clip.name);
-					mixer.clipAction(clip).play();
-				});
+				// mixer = new THREE.AnimationMixer( gltf.scene );
+				// gltf.animations.forEach(( clip ) => {
+				// 	console.log('animation ' + clip.name);
+				// 	mixer.clipAction(clip).play();
+				// });
 				markerGroup.add(gltf.scene);
 			//}
 
@@ -143,8 +143,8 @@
 					lastTimeMsec = nowMsec;
 					// call each update function
 					controller.update( source.domElement );
-					if(mixer)
-						mixer.update(deltaMsec/100);
+					// if(mixer)
+					// 	mixer.update(deltaMsec/100);
 					// cube.rotation.x += deltaMsec/10000 * Math.PI
 					// torus.rotation.y += deltaMsec/1000 * Math.PI
 					// torus.rotation.z += deltaMsec/1000 * Math.PI
