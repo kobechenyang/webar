@@ -50,9 +50,9 @@
 			markerGroup.add(directionalLight);
 
             directionalLight.shadow.camera.bottom = -0.5;
-            directionalLight.shadow.camera.top = 5;
-            directionalLight.shadow.camera.right = 5;
-            directionalLight.shadow.camera.left = -5;
+            directionalLight.shadow.camera.top = 2; //5;
+            directionalLight.shadow.camera.right = 1.5;
+            directionalLight.shadow.camera.left = -1.5;
 			// directionalLight.shadow.mapSize.width = 2048;  
 			// directionalLight.shadow.mapSize.height = 2048; 
 			// directionalLight.shadow.camera.near = 50;      
@@ -89,7 +89,7 @@
 				console.log(child.type +' , ' + child.name);
 			// if(!child.name.includes("RootNode")&&!child.name.includes("polySurface"))
 			//  	gltf.scene.remove(child);
-			if(child.name.includes('ground')){
+			if(child.name.includes('pPlane')){
 				child.material = new THREE.ShadowMaterial({ opacity: 0.7 });
 			}
 			// 	gltf.scene.remove(child);
@@ -113,13 +113,11 @@
 
 		  
 		  });
-		  
-		  
 
 				var patternMarker = new THREEAR.PatternMarker({
 					patternUrl: './data/patt.hiro',
 					markerObject: markerGroup,
-					patternratio: 0.8,
+					patternRatio: 0.8,
 					minConfidence: 0.3
 				});
 
