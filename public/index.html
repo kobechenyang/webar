@@ -63,7 +63,7 @@
 
 			THREEAR.initialize({ source: source, lostTimeout: 100000 }).then((controller) => {
 
-        var loader = new GLTFLoader().setPath('./model/9/');
+        var loader = new GLTFLoader().setPath('./model/8/');
 
           loader.load('2019_08_08_135350_position_recolor.gltf', function (gltf) {
 			// var geometry = new THREE.TorusKnotGeometry(0.3,0.1,64,16);
@@ -98,8 +98,8 @@
 				child.receiveShadow = true;
 			  }
 			});
-            gltf.scene.position.set(-0.8, 0, 0.5);
-			gltf.scene.scale.set(0.05, 0.05, 0.05);
+            //gltf.scene.position.set(-0.8, 0, 0.5);
+			gltf.scene.scale.set(0.01, 0.01, 0.01);
 			gltf.scene.name = "model";
 			//for(var obj in objs){
 				
