@@ -43,15 +43,16 @@
 			scene.add(light);
 			var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.5, 100 );
 			directionalLight.position.set(0.3, 0.8, 0.3).setLength(2);
+		
 			directionalLight.castShadow = true;  
 			directionalLight.shadow.mapSize.set(512,512);
 			directionalLight.target = markerGroup;
 			markerGroup.add(directionalLight);
 
-            directionalLight.shadow.camera.bottom = -0.6;
-            directionalLight.shadow.camera.top = 2;
-            directionalLight.shadow.camera.right = 1.5;
-            directionalLight.shadow.camera.left = -1.5;
+            directionalLight.shadow.camera.bottom = -0.5;
+            directionalLight.shadow.camera.top = 5;
+            directionalLight.shadow.camera.right = 5;
+            directionalLight.shadow.camera.left = -5;
 			// directionalLight.shadow.mapSize.width = 2048;  
 			// directionalLight.shadow.mapSize.height = 2048; 
 			// directionalLight.shadow.camera.near = 50;      
@@ -97,8 +98,8 @@
 				child.receiveShadow = true;
 			  }
 			});
-            //gltf.scene.position.set(0,-1,-3);
-            gltf.scene.scale.set(0.02, 0.02, 0.02);
+            gltf.scene.position.set(-0.8, 0, 0.5);
+			gltf.scene.scale.set(0.05, 0.05, 0.05);
 			gltf.scene.name = "model";
 			//for(var obj in objs){
 				
