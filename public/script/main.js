@@ -23,7 +23,7 @@ function initLoadingManager() {
 
             //progressBar.style.backgroundColor = 'blue'
             percentComplete = 1;
-            
+            console.log("hehe");
         }
 
         progressBar.style.width = percentComplete + '%';
@@ -36,12 +36,14 @@ function initLoadingManager() {
         // prevent the timer being set again
         // if onStart is called multiple times
         if (frameID !== null) return;
+        console.log('start');
         loadingOverlay.style.visibility = 'visible';
         animateBar();
 
     };
 
     manager.onLoad = function () {
+        console.log('load');
         loadingOverlay.style.visibility = 'hidden';
         //loadingOverlay.classList.add('loading-overlay-hidden');
 
