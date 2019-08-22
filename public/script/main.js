@@ -1,0 +1,181 @@
+import { GLTFLoader } from '../js/libs/GLTFLoader.js';
+
+let camera, renderer, scene;
+
+function initLoadingManager() {
+
+    const manager = new THREE.LoadingManager();
+    const progressBar = document.querySelector('#progress');
+    const loadingOverlay = document.querySelector('#loading-overlay');
+
+    let percentComplete = 1;
+    let frameID = null;
+
+    const updateAmount = 0.5; // in percent of bar width, should divide 100 evenly
+
+    const animateBar = () => {
+        percentComplete += updateAmount;
+
+        // if the bar fills up, just reset it.
+        // I'm changing the color only once, you 
+        // could get fancy here and set up the colour to get "redder" every time
+        if (percentComplete >= 100) {
+
+            //progressBar.style.backgroundColor = 'blue'
+            percentComplete = 1;
+            
+        }
+
+        progressBar.style.width = percentComplete + '%';
+
+        frameID = requestAnimationFrame(animateBar)
+
+    }
+
+    manager.onStart = () => {
+        // prevent the timer being set again
+        // if onStart is called multiple times
+        if (frameID !== null) return;
+        loadingOverlay.style.visibility = 'visible';
+        animateBar();
+
+    };
+
+    manager.onLoad = function () {
+        loadingOverlay.style.visibility = 'hidden';
+        //loadingOverlay.classList.add('loading-overlay-hidden');
+
+        // reset the bar in case we need to use it again
+        percentComplete = 0;
+        progressBar.style.width = 0;
+        cancelAnimationFrame(frameID);
+
+    };
+
+    manager.onError = function (e) {
+
+        console.error(e);
+
+        progressBar.style.backgroundColor = 'red';
+
+    }
+
+    return manager;
+}
+
+function init() {
+    renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+    });
+
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+    renderer.shadowMap.enabled = true;
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // init scene and camera
+    scene = new THREE.Scene();
+    camera = new THREE.Camera();
+    scene.add(camera);
+
+    var markerGroup = new THREE.Group();
+    scene.add(markerGroup);
+
+    var light = new THREE.HemisphereLight(0xffffff, 0x9797A0, 1);
+    scene.add(light);
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 1.5, 100);
+    directionalLight.position.set(0.3, 0.8, 0.3).setLength(2);
+
+    directionalLight.castShadow = true;
+    directionalLight.shadow.mapSize.set(512, 512);
+    directionalLight.target = markerGroup;
+    markerGroup.add(directionalLight);
+
+    directionalLight.shadow.camera.bottom = -0.5;
+    directionalLight.shadow.camera.top = 2; //5;
+    directionalLight.shadow.camera.right = 1.5;
+    directionalLight.shadow.camera.left = -1.5;
+
+    var source = new THREEAR.Source({ renderer, camera });
+    THREEAR.initialize({ source: source, lostTimeout: 100000 }).then((controller) => {
+
+        var manager = initLoadingManager();
+        var loader = new GLTFLoader(manager).setPath('./model/7/');
+
+        loader.load('2019_08_08_135350_position_recolor.gltf', function (gltf) {
+
+            gltf.scene.traverse(function (child) {
+
+                console.log(child.type + ' , ' + child.name);
+                // if(!child.name.includes("RootNode")&&!child.name.includes("polySurface"))
+                //  	gltf.scene.remove(child);
+                if (child.name.includes('pPlane')) {
+                    child.material = new THREE.ShadowMaterial({ opacity: 0.7 });
+                }
+                // 	gltf.scene.remove(child);
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+            //gltf.scene.position.set(-0.8, 0, 0.5);
+            gltf.scene.scale.set(0.01, 0.01, 0.01);
+            gltf.scene.name = "model";
+
+            markerGroup.add(gltf.scene);
+
+        }, manager.onProgress, manager.onError);
+
+        var patternMarker = new THREEAR.PatternMarker({
+            patternUrl: './data/pattern-jiao.patt',
+            markerObject: markerGroup,
+            patternRatio: 0.8,
+            minConfidence: 0.3
+        }); //					patternRatio: 0.8,
+
+        var patternMarker2 = new THREEAR.PatternMarker({
+            patternUrl: './data/patt.hiro',
+            markerObject: markerGroup,
+            patternRatio: 0.5,
+            minConfidence: 0.3
+        }); //
+
+        controller.trackMarker(patternMarker);
+        controller.trackMarker(patternMarker2);
+
+        // controller.addEventListener('markerFound', function(event) {
+        // 	console.log('markerFound', event);
+        // });
+
+        // controller.addEventListener('markerLost', function(event) {
+        // 	console.log('markerLost', event);
+        // });
+
+        // run the rendering loop
+        var lastTimeMsec = 0;
+        requestAnimationFrame(function animate(nowMsec) {
+            // keep looping
+            requestAnimationFrame(animate);
+            // measure time
+            lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60;
+            var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
+            lastTimeMsec = nowMsec;
+            // call each update function
+            controller.update(source.domElement);
+            renderer.render(scene, camera);
+        });
+    });
+}
+
+function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+window.addEventListener('resize', onWindowResize);
+init();
+
