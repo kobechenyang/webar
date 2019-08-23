@@ -39,23 +39,13 @@ function initLoadingManager() {
 
     const updateAmount = 0.5; // in percent of bar width, should divide 100 evenly
 
-    const animateBar = () => {
+    const animateBar = (from, to) => {
+        percentComplete = Math.max(percentComplete, from);
         percentComplete += updateAmount;
-
-        // if the bar fills up, just reset it.
-        // I'm changing the color only once, you 
-        // could get fancy here and set up the colour to get "redder" every time
-        if (percentComplete >= 100) {
-
-            //progressBar.style.backgroundColor = 'blue'
-            percentComplete = 1;
-            console.log("hehe");
-        }
-
+        percentComplete = Math.min(percentComplete, to);
         progressBar.style.width = percentComplete + '%';
 
-        frameID = requestAnimationFrame(animateBar)
-
+        frameID = requestAnimationFrame(animateBar);
     }
 
     manager.onStart = () => {
@@ -64,7 +54,6 @@ function initLoadingManager() {
         if (frameID !== null) return;
         console.log('start');
         loadingOverlay.style.visibility = 'visible';
-        animateBar();
         // if(models[models.length-1].model!=null)
         // {
         //     var oldModel = markerGroup.getObjectByName("model");
@@ -75,9 +64,8 @@ function initLoadingManager() {
     };
 
     manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-
+        animateBar( (itemsLoaded-1)*100/itemsTotal, itemsLoaded*100/itemsTotal);
         console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
-     
     };
 
     manager.onLoad = function () {
