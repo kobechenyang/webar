@@ -1,0 +1,308 @@
+{
+    "asset": {
+        "copyright": "(C)2019 ran",
+        "generator": "Maya2glTF V0.9.10 b7c0eed",
+        "version": "2.0"
+    },
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0,
+    "nodes": [
+        {
+            "children": [
+                1
+            ],
+            "translation": [
+                2.2575855255126959,
+                82.4857406616211,
+                -12.514739990234377
+            ],
+            "name": "polySurface3243"
+        },
+        {
+            "mesh": 0,
+            "translation": [
+                -2.2575855255126959,
+                -82.4857406616211,
+                12.514739990234377
+            ],
+            "name": "polySurface3243:PIV"
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "NORMAL": 1,
+                        "POSITION": 2,
+                        "TANGENT": 3,
+                        "TEXCOORD_0": 4
+                    },
+                    "indices": 0,
+                    "mode": 4,
+                    "material": 0
+                }
+            ],
+            "name": "polySurface3243Shape"
+        }
+    ],
+    "animations": [
+        {
+            "channels": [
+                {
+                    "sampler": 0,
+                    "target": {
+                        "node": 0,
+                        "path": "translation"
+                    }
+                },
+                {
+                    "sampler": 1,
+                    "target": {
+                        "node": 0,
+                        "path": "rotation"
+                    }
+                }
+            ],
+            "samplers": [
+                {
+                    "input": 5,
+                    "interpolation": "LINEAR",
+                    "output": 6
+                },
+                {
+                    "input": 5,
+                    "interpolation": "LINEAR",
+                    "output": 7
+                }
+            ],
+            "name": "clip"
+        }
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5123,
+            "count": 360,
+            "max": [
+                92
+            ],
+            "min": [
+                0
+            ],
+            "type": "SCALAR"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 93,
+            "max": [
+                0.3423104584217072,
+                0.9999701380729676,
+                0.18634222447872166
+            ],
+            "min": [
+                -0.19772060215473176,
+                0.9317216873168944,
+                -0.19037602841854096
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 1116,
+            "componentType": 5126,
+            "count": 93,
+            "max": [
+                72.2771987915039,
+                26.52301025390625,
+                48.008544921875
+            ],
+            "min": [
+                -49.174373626708987,
+                7.954933166503906,
+                -76.25501251220703
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 93,
+            "max": [
+                0.9987623691558838,
+                0.19473731517791749,
+                0.2968650758266449,
+                1.0
+            ],
+            "min": [
+                0.8945032954216003,
+                -0.3626737892627716,
+                -0.33647698163986208,
+                1.0
+            ],
+            "type": "VEC4"
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 93,
+            "max": [
+                0.0,
+                1.0
+            ],
+            "min": [
+                -1.0230000019073489,
+                -0.0465233325958252
+            ],
+            "type": "VEC2"
+        },
+        {
+            "bufferView": 4,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 8003,
+            "max": [
+                133.36666870117188
+            ],
+            "min": [
+                0.0
+            ],
+            "type": "SCALAR"
+        },
+        {
+            "bufferView": 5,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 8003,
+            "max": [
+                22.257583618164064,
+                82.4857406616211,
+                -12.514739990234377
+            ],
+            "min": [
+                -17.742412567138673,
+                82.4857406616211,
+                -12.514739990234377
+            ],
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 6,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 8003,
+            "max": [
+                0.0,
+                0.08715572953224182,
+                0.0,
+                1.0
+            ],
+            "min": [
+                0.0,
+                -0.08715572953224182,
+                0.0,
+                0.9961947202682496
+            ],
+            "type": "VEC4"
+        }
+    ],
+    "materials": [
+        {
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1.0
+                ],
+                "baseColorTexture": {
+                    "index": 0
+                },
+                "metallicFactor": 0.0,
+                "roughnessFactor": 1.0
+            },
+            "alphaMode": "BLEND",
+            "name": "cloud"
+        }
+    ],
+    "textures": [
+        {
+            "sampler": 0,
+            "source": 0
+        }
+    ],
+    "images": [
+        {
+            "uri": "cloud"
+        }
+    ],
+    "samplers": [
+        {
+            "magFilter": 9729,
+            "minFilter": 9987,
+            "wrapS": 10497,
+            "wrapT": 10497
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 260560,
+            "byteLength": 720,
+            "target": 34963
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 225572,
+            "byteLength": 2232,
+            "byteStride": 12,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 128048,
+            "byteLength": 1488,
+            "byteStride": 16,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 227804,
+            "byteLength": 744,
+            "byteStride": 8,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 228548,
+            "byteLength": 32012
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 129536,
+            "byteLength": 96036
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 128048
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 261280,
+            "uri": "2019_08_08_135350_position_recolor0.bin"
+        }
+    ]
+}

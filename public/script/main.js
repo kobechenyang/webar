@@ -1,6 +1,32 @@
 import { GLTFLoader } from '../js/libs/GLTFLoader.js';
 
-let camera, renderer, scene;
+var camera, renderer, scene;
+var isLoadingModel;
+var markerGroup;
+
+var models = [
+    {
+        markerUrl: './data/pattern-jiao.patt',
+        modelUrl: './model/jiaolou/2019_08_08_135350_position_recolor.gltf',
+        model: null
+    },
+    {
+        markerUrl: './data/pattern-tai.patt',
+        modelUrl: './model/cloud/2019_08_08_135350_position_recolor.gltf',
+        model: null
+    },
+    {
+        markerUrl: './data/patt.hiro',
+        modelUrl: './model/jiaolou/2019_08_08_135350_position_recolor.gltf',
+        model: null
+    },
+    // last is the cloud
+    {
+        markerUrl: 'cloud',
+        modelUrl: './model/cloud/2019_08_08_135350_position_recolor.gltf',
+        model: null
+    },
+];
 
 function initLoadingManager() {
 
@@ -39,7 +65,13 @@ function initLoadingManager() {
         console.log('start');
         loadingOverlay.style.visibility = 'visible';
         animateBar();
-
+        if(models[models.length-1].model!=null)
+        {
+            var oldModel = markerGroup.getObjectByName("model");
+            if (oldModel !== null)
+                markerGroup.remove(oldModel);
+            markerGroup.add(models[models.length-1].model);
+        }
     };
 
     manager.onLoad = function () {
@@ -65,7 +97,61 @@ function initLoadingManager() {
     return manager;
 }
 
+function loadModel(index) {
+    if (index < 0 || index >= models.length) {
+        console.error('marker index is not valid');
+        return;
+    }
+    if (isLoadingModel) {
+        console.log('model is loading');
+        return;
+    }
+    var oldModel = markerGroup.getObjectByName("model");
+    if (oldModel !== null && oldModel === models[index].model) {
+        console.log(models[index].model.name + 'already on marker');
+        return;
+    }
+    if (models[index].model !== null) {
+        console.log(models[index].model.name);
+        if (oldModel !== null)
+            markerGroup.remove(oldModel);
+        markerGroup.add(models[index].model);
+    }
+    isLoadingModel = true;
+    var manager = initLoadingManager();
+    var loader = new GLTFLoader(manager);
+    loader.load(models[index].modelUrl, function (gltf) {
+
+        gltf.scene.traverse(function (child) {
+            console.log(child.type + ' , ' + child.name);
+            // if(!child.name.includes("RootNode")&&!child.name.includes("polySurface"))
+            //  	gltf.scene.remove(child);
+            if (child.name.includes('ground')) {
+                child.material = new THREE.ShadowMaterial({ opacity: 0.7 });
+            }
+            // 	gltf.scene.remove(child);
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+        //gltf.scene.position.set(-0.8, 0, 0.5);
+        gltf.scene.scale.set(0.01, 0.01, 0.01);
+        gltf.scene.name = "model";
+        var oldModel = markerGroup.getObjectByName("model");
+        if (oldModel !== null)
+            markerGroup.remove(oldModel);
+        markerGroup.add(gltf.scene);
+        var newModel = {...models[index], model:gltf.scene};
+        models[index] = newModel;
+        console.log(models[index].model.name);
+        isLoadingModel = false;
+    }, manager.onProgress, manager.onError);
+}
+
 function init() {
+    isLoadingModel = false;
+
     renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true
@@ -82,7 +168,7 @@ function init() {
     camera = new THREE.Camera();
     scene.add(camera);
 
-    var markerGroup = new THREE.Group();
+    markerGroup = new THREE.Group();
     scene.add(markerGroup);
 
     var light = new THREE.HemisphereLight(0xffffff, 0x9797A0, 1);
@@ -103,56 +189,27 @@ function init() {
     var source = new THREEAR.Source({ renderer, camera });
     THREEAR.initialize({ source: source, lostTimeout: 100000 }).then((controller) => {
 
-        var manager = initLoadingManager();
-        var loader = new GLTFLoader(manager).setPath('./model/7/');
+        loadModel(models.length-1);
 
-        loader.load('2019_08_08_135350_position_recolor.gltf', function (gltf) {
-
-            gltf.scene.traverse(function (child) {
-
-                console.log(child.type + ' , ' + child.name);
-                // if(!child.name.includes("RootNode")&&!child.name.includes("polySurface"))
-                //  	gltf.scene.remove(child);
-                if (child.name.includes('pPlane')) {
-                    child.material = new THREE.ShadowMaterial({ opacity: 0.7 });
-                }
-                // 	gltf.scene.remove(child);
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
+        for (var i = 0; i < models.length-1; i++) {
+            var markerUrl = models[i].markerUrl;
+            console.log(markerUrl);
+            var patternMarker = new THREEAR.PatternMarker({
+                patternUrl: markerUrl,
+                markerObject: markerGroup,
+                patternRatio: 0.8,
+                minConfidence: 0.3
             });
-            //gltf.scene.position.set(-0.8, 0, 0.5);
-            gltf.scene.scale.set(0.01, 0.01, 0.01);
-            gltf.scene.name = "model";
+            controller.trackMarker(patternMarker);
+        }
 
-            markerGroup.add(gltf.scene);
+        controller.addEventListener('markerFound', function (event) {
+            //console.log('markerFound', event.marker.id);
+            loadModel(event.marker.id);
+        });
 
-        }, manager.onProgress, manager.onError);
-
-        var patternMarker = new THREEAR.PatternMarker({
-            patternUrl: './data/pattern-jiao.patt',
-            markerObject: markerGroup,
-            patternRatio: 0.8,
-            minConfidence: 0.3
-        }); //					patternRatio: 0.8,
-
-        var patternMarker2 = new THREEAR.PatternMarker({
-            patternUrl: './data/patt.hiro',
-            markerObject: markerGroup,
-            patternRatio: 0.5,
-            minConfidence: 0.3
-        }); //
-
-        controller.trackMarker(patternMarker);
-        controller.trackMarker(patternMarker2);
-
-        // controller.addEventListener('markerFound', function(event) {
-        // 	console.log('markerFound', event);
-        // });
-
-        // controller.addEventListener('markerLost', function(event) {
-        // 	console.log('markerLost', event);
+        // controller.addEventListener('markerLost', function (event) {
+        //     console.log('markerLost', event);
         // });
 
         // run the rendering loop
@@ -171,13 +228,4 @@ function init() {
     });
 }
 
-function onWindowResize() {
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-window.addEventListener('resize', onWindowResize);
 init();
-
