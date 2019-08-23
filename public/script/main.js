@@ -12,12 +12,7 @@ var models = [
     },
     {
         markerUrl: './data/pattern-tai.patt',
-        modelUrl: './model/cloud/2019_08_08_135350_position_recolor.gltf',
-        model: null
-    },
-    {
-        markerUrl: './data/patt.hiro',
-        modelUrl: './model/jiaolou/2019_08_08_135350_position_recolor.gltf',
+        modelUrl: './model/taihedian/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
     // last is the cloud
@@ -64,8 +59,9 @@ function initLoadingManager() {
     };
 
     manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-        animateBar( (itemsLoaded-1)*100/itemsTotal, itemsLoaded*100/itemsTotal);
-        console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+        progressBar.style.width = (itemsLoaded / itemsTotal * 100) + '%';
+        //animateBar( (itemsLoaded-1)*100/itemsTotal, itemsLoaded*100/itemsTotal);
+        //console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
     };
 
     manager.onLoad = function () {
@@ -97,16 +93,16 @@ function loadModel(index) {
         return;
     }
     if (isLoadingModel) {
-        console.log('model is loading');
+        //console.log('model is loading');
         return;
     }
     var oldModel = markerGroup.getObjectByName("model");
     if (oldModel !== null && oldModel === models[index].model) {
-        console.log(models[index].model.name + 'already on marker');
+        //console.log(models[index].model.name + 'already on marker');
         return;
     }
     if (models[index].model !== null) {
-        console.log(models[index].model.name);
+        //console.log(models[index].model.name);
         if (oldModel !== null)
             markerGroup.remove(oldModel);
         markerGroup.add(models[index].model);
@@ -117,7 +113,6 @@ function loadModel(index) {
     loader.load(models[index].modelUrl, function (gltf) {
 
         gltf.scene.traverse(function (child) {
-            console.log(child.type + ' , ' + child.name);
             // if(!child.name.includes("RootNode")&&!child.name.includes("polySurface"))
             //  	gltf.scene.remove(child);
             if (child.name.includes('ground')) {
@@ -138,7 +133,6 @@ function loadModel(index) {
         markerGroup.add(gltf.scene);
         var newModel = {...models[index], model:gltf.scene};
         models[index] = newModel;
-        console.log(models[index].model.name);
         isLoadingModel = false;
     }, manager.onProgress, manager.onError);
 }
@@ -192,7 +186,7 @@ function init() {
                 patternUrl: markerUrl,
                 markerObject: markerGroup,
                 patternRatio: 0.8,
-                minConfidence: 0.3
+                minConfidence: 0.5
             });
             controller.trackMarker(patternMarker);
         }
