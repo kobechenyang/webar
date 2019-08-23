@@ -192,7 +192,8 @@ function init() {
         }
 
         controller.addEventListener('markerFound', function (event) {
-            console.log('markerFound', event.marker.patternUrl + " , id " + event.marker.id);
+            var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
+            console.log('markerFound', event.marker.patternUrl + " , index " + index);
             loadModel(event.marker.id);
         });
 
