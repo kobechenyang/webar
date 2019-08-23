@@ -47,7 +47,7 @@ function initLoadingManager() {
         // prevent the timer being set again
         // if onStart is called multiple times
         if (frameID !== null) return;
-        console.log('start');
+        //console.log('start');
         loadingOverlay.style.visibility = 'visible';
         if(models[models.length-1].model!=null)
         {
@@ -65,7 +65,7 @@ function initLoadingManager() {
     };
 
     manager.onLoad = function () {
-        console.log('load');
+        //console.log('load');
         loadingOverlay.style.visibility = 'hidden';
         //loadingOverlay.classList.add('loading-overlay-hidden');
 
@@ -192,7 +192,7 @@ function init() {
         }
 
         controller.addEventListener('markerFound', function (event) {
-            //console.log('markerFound', event.marker.id);
+            console.log('markerFound', event.marker.id);
             loadModel(event.marker.id);
         });
 
