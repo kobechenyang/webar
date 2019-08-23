@@ -74,6 +74,12 @@ function initLoadingManager() {
         // }
     };
 
+    manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+
+        console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+     
+    };
+
     manager.onLoad = function () {
         console.log('load');
         loadingOverlay.style.visibility = 'hidden';
