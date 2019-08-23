@@ -65,13 +65,13 @@ function initLoadingManager() {
         console.log('start');
         loadingOverlay.style.visibility = 'visible';
         animateBar();
-        if(models[models.length-1].model!=null)
-        {
-            var oldModel = markerGroup.getObjectByName("model");
-            if (oldModel !== null)
-                markerGroup.remove(oldModel);
-            markerGroup.add(models[models.length-1].model);
-        }
+        // if(models[models.length-1].model!=null)
+        // {
+        //     var oldModel = markerGroup.getObjectByName("model");
+        //     if (oldModel !== null)
+        //         markerGroup.remove(oldModel);
+        //     markerGroup.add(models[models.length-1].model);
+        // }
     };
 
     manager.onLoad = function () {
