@@ -209,7 +209,7 @@ function init() {
         controller.addEventListener('markerFound', function (event) {
             var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
             console.log('markerFound', event.marker.patternUrl + " , index " + index);
-            loadModel(event.marker.id);
+            loadModel(index);
         });
 
         // controller.addEventListener('markerLost', function (event) {
