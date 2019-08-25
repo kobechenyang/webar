@@ -12,7 +12,17 @@ var models = [
     },
     {
         markerUrl: './data/pattern-tai.patt',
-        modelUrl: './model/taihedian/2019_08_08_135350_position_recolor.gltf',
+        modelUrl: './model/taihe/2019_08_08_135350_position_recolor.gltf',
+        model: null
+    },
+    {
+        markerUrl: './data/pattern-bao.patt',
+        modelUrl: './model/baohe/2019_08_08_135350_position_recolor.gltf',
+        model: null
+    },
+    {
+        markerUrl: './data/pattern-zhong.patt',
+        modelUrl: './model/zhonghe/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
     // last is the cloud
