@@ -25,6 +25,11 @@ var models = [
         modelUrl: './model/zhonghe/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
+    {
+        markerUrl: './data/pattern-wu.patt',
+        modelUrl: './model/wumen/2019_08_08_135350_position_recolor.gltf',
+        model: null
+    },
     // last is the cloud
     {
         markerUrl: 'cloud',
