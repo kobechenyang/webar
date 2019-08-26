@@ -6,22 +6,22 @@ var markerGroup;
 
 var models = [
     {
-        markerUrl: './data/pattern-jiao.patt',
+        markerUrl: './data/pattern-jiao2.patt',
         modelUrl: './model/jiaolou/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
     {
-        markerUrl: './data/pattern-tai.patt',
+        markerUrl: './data/pattern-tai2.patt',
         modelUrl: './model/taihe/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
     {
-        markerUrl: './data/pattern-bao.patt',
+        markerUrl: './data/pattern-bao2.patt',
         modelUrl: './model/baohe/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
     {
-        markerUrl: './data/pattern-zhong.patt',
+        markerUrl: './data/pattern-zhong2.patt',
         modelUrl: './model/zhonghe/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
@@ -64,13 +64,13 @@ function initLoadingManager() {
         if (frameID !== null) return;
         //console.log('start');
         loadingOverlay.style.visibility = 'visible';
-        if(models[models.length-1].model!=null)
-        {
-            var oldModel = markerGroup.getObjectByName("model");
-            if (oldModel !== null)
-                markerGroup.remove(oldModel);
-            markerGroup.add(models[models.length-1].model);
-        }
+        // if(models[models.length-1].model!=null)
+        // {
+        //     var oldModel = markerGroup.getObjectByName("model");
+        //     if (oldModel !== null)
+        //         markerGroup.remove(oldModel);
+        //     markerGroup.add(models[models.length-1].model);
+        // }
     };
 
     manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
