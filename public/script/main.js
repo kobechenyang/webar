@@ -6,22 +6,22 @@ var markerGroup;
 
 var models = [
     {
-        markerUrl: './data/pattern-jiao2.patt',
+        markerUrl: './data/pattern-jiao.patt',
         modelUrl: './model/jiaolou/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
     {
-        markerUrl: './data/pattern-tai2.patt',
+        markerUrl: './data/pattern-tai.patt',
         modelUrl: './model/taihe/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
     {
-        markerUrl: './data/pattern-bao2.patt',
+        markerUrl: './data/pattern-bao.patt',
         modelUrl: './model/baohe/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
     {
-        markerUrl: './data/pattern-zhong2.patt',
+        markerUrl: './data/pattern-zhong.patt',
         modelUrl: './model/zhonghe/2019_08_08_135350_position_recolor.gltf',
         model: null
     },
