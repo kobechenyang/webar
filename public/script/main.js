@@ -176,11 +176,11 @@ function init() {
 
     var light = new THREE.HemisphereLight(0xffffff, 0x9797A0, 1);
     scene.add(light);
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 1.5, 100);
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 1, 10);
     directionalLight.position.set(0.3, 0.8, 0.3).setLength(2);
 
     directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.set(512, 512);
+    directionalLight.shadow.mapSize.set(1024, 1024);
     directionalLight.target = markerGroup;
     markerGroup.add(directionalLight);
 
