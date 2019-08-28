@@ -12,7 +12,7 @@ var models = [
     },
     {
         markerUrl: './data/pattern-tai.patt',
-        modelUrl: './model/taihe/2019_08_08_135350_position_recolor.gltf',
+        modelUrl: './model/taihe/2019_08_27_232519_.gltf',
         model: null
     },
     {
