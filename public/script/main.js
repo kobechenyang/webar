@@ -7,8 +7,6 @@ var markerGroup, directionalLight;
 
 bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
 const slider = document.getElementById("myRange");
-bodyScrollLock.enableBodyScroll(document.getElementById("slidecontainer"));
-bodyScrollLock.enableBodyScroll(slider);
 
 var models = [
     {
