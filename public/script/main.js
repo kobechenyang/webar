@@ -109,17 +109,17 @@ function initLoadingManager() {
 
 function displaySlider(isFound, index){
     if(!isFound){
-        console.log('displaySlider hidden');
+        //console.log('displaySlider hidden');
         slider.style.visibility = 'hidden';
     }else{
-        console.log('displaySlider visible' + models[index].scale);
+        //console.log('displaySlider visible' + models[index].scale);
         slider.style.visibility = 'visible';
         slider.value = models[index].scale * 100;
         slider.oninput = function() {
             var v = Math.max(1, this.value/100);
             models[index].scale = v;
             models[index].model.scale.set(0.01*v, 0.01*v, 0.01*v);
-            console.log("slider " + v);
+            //console.log("slider " + v);
         }
     }
 }
@@ -233,13 +233,13 @@ function init() {
 
         controller.addEventListener('markerFound', function (event) {
             var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
-            console.log('markerFound', event.marker.patternUrl + " , index " + index);
+            //console.log('markerFound', event.marker.patternUrl + " , index " + index);
             loadModel(index);
             displaySlider(true, index);
         });
 
         controller.addEventListener('markerLost', function (event) {
-            console.log('markerLost', event);
+            //console.log('markerLost', event);
             var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
             displaySlider(false, index);
         });
