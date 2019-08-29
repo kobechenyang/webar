@@ -14,6 +14,25 @@ document.addEventListener('touchmove',
         console.log("touchmove");
 }, {passive:false});
 
+const mc = new Hammer(slider); // init hammer.js
+  // get all 'pan' gestures with vertical direction
+  mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
+
+  // whenever the screen get's panned vertically on our ui (e.g. the user want's to scroll) ...
+  mc.on("panmove", function(ev) {
+    switch (ev.direction) { // find the direction of panning
+      case 4: // right
+        slider.scrollBy(0, 10); // scroll down the ui div by 10 pixels (might need to adjust on different devices)
+        break;
+      case 2: // left
+        slider.scrollBy(0, -10); // scroll up the ui div by 10 pixels
+        break;
+      default:
+        break;
+    }
+  });
+
+
 var models = [
     {
         markerUrl: './data/pattern-jiao.patt',
