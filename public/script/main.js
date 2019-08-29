@@ -228,7 +228,7 @@ function init() {
     directionalLight.shadow.camera.left = -2;
 
     var source = new THREEAR.Source({ renderer, camera });
-    THREEAR.initialize({ source: source, lostTimeout: 1000 }).then((controller) => {
+    THREEAR.initialize({ source: source, lostTimeout: 100 }).then((controller) => {
 
         loadModel(models.length-1);
 
