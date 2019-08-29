@@ -38,7 +38,7 @@ width: 5%;
 }
 
 .slidecontainer {
-    position: fixed;
+    position: absolute;
     bottom: 40px;
     display: flex;
     visibility: hidden;
