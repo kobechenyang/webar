@@ -2,7 +2,7 @@ import { GLTFLoader } from '../js/libs/GLTFLoader.js';
 
 var camera, renderer, scene;
 var isLoadingModel;
-var markerGroup;
+var markerGroup, directionalLight;
 
 var models = [
     {
@@ -108,20 +108,33 @@ function initLoadingManager() {
 }
 
 function displaySlider(isFound, index){
+    var currentmodel = markerGroup.getObjectByName("model");
     if(!isFound){
         //console.log('displaySlider hidden');
         slider.style.visibility = 'hidden';
-    }else{
+    }else if(currentmodel){
         //console.log('displaySlider visible' + models[index].scale);
         slider.style.visibility = 'visible';
         slider.value = models[index].scale * 100;
+        setDirectionligthSize(models[index].scale);
         slider.oninput = function() {
             var v = Math.max(1, this.value/100);
             models[index].scale = v;
             models[index].model.scale.set(0.01*v, 0.01*v, 0.01*v);
+            setDirectionligthSize(models[index].scale);
             //console.log("slider " + v);
         }
     }
+}
+
+function setDirectionligthSize(size)
+{
+    if(!directionalLight || size<0||size>5)
+        return;
+    directionalLight.shadow.camera.bottom = -1-size;
+    directionalLight.shadow.camera.top = 1+size;
+    directionalLight.shadow.camera.right = 1+size;
+    directionalLight.shadow.camera.left = -1-size;
 }
 
 function loadModel(index) {
@@ -201,7 +214,7 @@ function init() {
 
     var light = new THREE.HemisphereLight(0xffffff, 0x9797A0, 1);
     scene.add(light);
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 1, 10);
+    directionalLight = new THREE.DirectionalLight(0xffffff, 1, 10);
     directionalLight.position.set(0.3, 0.8, 0.3).setLength(10);
 
     directionalLight.castShadow = true;
@@ -209,10 +222,10 @@ function init() {
     directionalLight.target = markerGroup;
     markerGroup.add(directionalLight);
 
-    directionalLight.shadow.camera.bottom = -3;
-    directionalLight.shadow.camera.top = 5; //5;
-    directionalLight.shadow.camera.right = 4;
-    directionalLight.shadow.camera.left = -4;
+    directionalLight.shadow.camera.bottom = -2;
+    directionalLight.shadow.camera.top = 2; //5;
+    directionalLight.shadow.camera.right = 2;
+    directionalLight.shadow.camera.left = -2;
 
     var source = new THREEAR.Source({ renderer, camera });
     THREEAR.initialize({ source: source, lostTimeout: 1000 }).then((controller) => {
@@ -226,7 +239,7 @@ function init() {
                 patternUrl: markerUrl,
                 markerObject: markerGroup,
                 patternRatio: 0.8,
-                minConfidence: 0.5
+                minConfidence: 0.6
             });
             controller.trackMarker(patternMarker);
         }
