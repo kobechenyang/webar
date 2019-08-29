@@ -8,6 +8,7 @@ var markerGroup, directionalLight;
 bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
 const slider = document.getElementById("myRange");
 bodyScrollLock.enableBodyScroll(document.getElementById("slidecontainer"));
+bodyScrollLock.enableBodyScroll(slider);
 
 var models = [
     {
@@ -261,7 +262,7 @@ function init() {
         controller.addEventListener('markerLost', function (event) {
             //console.log('markerLost', event);
             var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
-            displaySlider(false, index);
+            //displaySlider(false, index);
         });
 
         // run the rendering loop
