@@ -114,7 +114,7 @@ function displaySlider(isFound, index){
     var currentmodel = markerGroup.getObjectByName("model");
     if(!isFound){
         //console.log('displaySlider hidden');
-        slider.style.visibility = 'hidden';
+        //slider.style.visibility = 'hidden';
     }else if(currentmodel){
         //console.log('displaySlider visible' + models[index].scale);
         slider.style.visibility = 'visible';
