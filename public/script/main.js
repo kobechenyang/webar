@@ -5,7 +5,7 @@ var camera, renderer, scene, stats;
 var isLoadingModel;
 var markerGroup, directionalLight;
 
-// bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
+bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
 const slider = document.getElementById("myRange");
 
 var models = [
