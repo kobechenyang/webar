@@ -8,42 +8,48 @@ var models = [
     {
         markerUrl: './data/pattern-jiao.patt',
         modelUrl: './model/jiaolou/2019_08_08_135350_position_recolor.gltf',
-        model: null
+        model: null,
+        scale: 1
     },
     {
         markerUrl: './data/pattern-tai.patt',
         modelUrl: './model/taihe/2019_08_27_232519_.gltf',
-        model: null
+        model: null,
+        scale: 1
     },
     {
         markerUrl: './data/pattern-bao.patt',
         modelUrl: './model/baohe/2019_08_08_135350_position_recolor.gltf',
-        model: null
+        model: null,
+        scale: 1
     },
     {
         markerUrl: './data/pattern-zhong.patt',
         modelUrl: './model/zhonghe/2019_08_08_135350_position_recolor.gltf',
-        model: null
+        model: null,
+        scale: 1
     },
     {
         markerUrl: './data/pattern-wu.patt',
         modelUrl: './model/wumen/2019_08_08_135350_position_recolor.gltf',
-        model: null
+        model: null,
+        scale: 1
     },
     // last is the cloud
     {
         markerUrl: 'cloud',
         modelUrl: './model/cloud/2019_08_08_135350_position_recolor.gltf',
-        model: null
+        model: null,
+        scale: 1
     },
 ];
+const slider = document.getElementById("myRange");
 
 function initLoadingManager() {
 
     const manager = new THREE.LoadingManager();
     const progressBar = document.querySelector('#progress');
     const loadingOverlay = document.querySelector('#loading-overlay');
-
     let percentComplete = 1;
     let frameID = null;
 
@@ -83,7 +89,6 @@ function initLoadingManager() {
         //console.log('load');
         loadingOverlay.style.visibility = 'hidden';
         //loadingOverlay.classList.add('loading-overlay-hidden');
-
         // reset the bar in case we need to use it again
         percentComplete = 0;
         progressBar.style.width = 0;
@@ -100,6 +105,23 @@ function initLoadingManager() {
     }
 
     return manager;
+}
+
+function displaySlider(isFound, index){
+    if(!isFound){
+        console.log('displaySlider hidden');
+        slider.style.visibility = 'hidden';
+    }else{
+        console.log('displaySlider visible' + models[index].scale);
+        slider.style.visibility = 'visible';
+        slider.value = models[index].scale * 100;
+        slider.oninput = function() {
+            var v = Math.max(1, this.value/100);
+            models[index].scale = v;
+            models[index].model.scale.set(0.01*v, 0.01*v, 0.01*v);
+            console.log("slider " + v);
+        }
+    }
 }
 
 function loadModel(index) {
@@ -133,22 +155,25 @@ function loadModel(index) {
             if (child.name.includes('ground')) {
                 child.material = new THREE.ShadowMaterial({ opacity: 0.7 });
             }
-            // 	gltf.scene.remove(child);
             if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
             }
         });
         //gltf.scene.position.set(-0.8, 0, 0.5);
-        gltf.scene.scale.set(0.01, 0.01, 0.01);
+        
         gltf.scene.name = "model";
         var oldModel = markerGroup.getObjectByName("model");
         if (oldModel !== null)
             markerGroup.remove(oldModel);
         markerGroup.add(gltf.scene);
+        var scale = models[index].scale;
+        gltf.scene.scale.set(0.01*scale, 0.01*scale, 0.01*scale);
         var newModel = {...models[index], model:gltf.scene};
         models[index] = newModel;
         isLoadingModel = false;
+        if(index>=0&&index<models.length-1) //dont display for last one
+            displaySlider(true, index);
     }, manager.onProgress, manager.onError);
 }
 
@@ -177,20 +202,20 @@ function init() {
     var light = new THREE.HemisphereLight(0xffffff, 0x9797A0, 1);
     scene.add(light);
     var directionalLight = new THREE.DirectionalLight(0xffffff, 1, 10);
-    directionalLight.position.set(0.3, 0.8, 0.3).setLength(2);
+    directionalLight.position.set(0.3, 0.8, 0.3).setLength(10);
 
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.set(1024, 1024);
     directionalLight.target = markerGroup;
     markerGroup.add(directionalLight);
 
-    directionalLight.shadow.camera.bottom = -0.5;
-    directionalLight.shadow.camera.top = 2; //5;
-    directionalLight.shadow.camera.right = 1.5;
-    directionalLight.shadow.camera.left = -1.5;
+    directionalLight.shadow.camera.bottom = -3;
+    directionalLight.shadow.camera.top = 5; //5;
+    directionalLight.shadow.camera.right = 4;
+    directionalLight.shadow.camera.left = -4;
 
     var source = new THREEAR.Source({ renderer, camera });
-    THREEAR.initialize({ source: source, lostTimeout: 100000 }).then((controller) => {
+    THREEAR.initialize({ source: source, lostTimeout: 1000 }).then((controller) => {
 
         loadModel(models.length-1);
 
@@ -210,11 +235,14 @@ function init() {
             var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
             console.log('markerFound', event.marker.patternUrl + " , index " + index);
             loadModel(index);
+            displaySlider(true, index);
         });
 
-        // controller.addEventListener('markerLost', function (event) {
-        //     console.log('markerLost', event);
-        // });
+        controller.addEventListener('markerLost', function (event) {
+            console.log('markerLost', event);
+            var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
+            displaySlider(false, index);
+        });
 
         // run the rendering loop
         var lastTimeMsec = 0;
