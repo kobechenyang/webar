@@ -1,10 +1,13 @@
 import { GLTFLoader } from '../js/libs/GLTFLoader.js';
+import Stats from '../js/libs/stats.module.js';
 
-var camera, renderer, scene;
+var camera, renderer, scene, stats;
 var isLoadingModel;
 var markerGroup, directionalLight;
 
 bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
+const slider = document.getElementById("myRange");
+bodyScrollLock.enableBodyScroll(slider);
 
 var models = [
     {
@@ -45,7 +48,6 @@ var models = [
         scale: 1
     },
 ];
-const slider = document.getElementById("myRange");
 
 function initLoadingManager() {
 
@@ -193,6 +195,9 @@ function loadModel(index) {
 }
 
 function init() {
+
+    stats = new Stats();
+    document.body.appendChild(stats.dom);
     isLoadingModel = false;
 
     renderer = new THREE.WebGLRenderer({
@@ -262,6 +267,7 @@ function init() {
         // run the rendering loop
         var lastTimeMsec = 0;
         requestAnimationFrame(function animate(nowMsec) {
+            stats.update();
             // keep looping
             requestAnimationFrame(animate);
             // measure time
