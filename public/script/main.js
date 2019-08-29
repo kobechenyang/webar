@@ -160,8 +160,8 @@ function loadModel(index) {
         markerGroup.add(models[index].model);
     }
     isLoadingModel = true;
-    //var manager = initLoadingManager();
-    var loader = new GLTFLoader();
+    var manager = initLoadingManager();
+    var loader = new GLTFLoader(manager);
     loader.load(models[index].modelUrl, function (gltf) {
 
         gltf.scene.traverse(function (child) {
@@ -187,10 +187,9 @@ function loadModel(index) {
         var newModel = {...models[index], model:gltf.scene};
         models[index] = newModel;
         isLoadingModel = false;
-        //if(index>=0&&index<models.length-1) //dont display for last one
-        //    displaySlider(true, index);
-    });
-    //}, manager.onProgress, manager.onError);
+        if(index>=0&&index<models.length-1) //dont display for last one
+           displaySlider(true, index);
+    }, manager.onProgress, manager.onError);
 }
 
 function init() {
@@ -251,13 +250,13 @@ function init() {
             var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
             //console.log('markerFound', event.marker.patternUrl + " , index " + index);
             loadModel(index);
-            //displaySlider(true, index);
+            displaySlider(true, index);
         });
 
         controller.addEventListener('markerLost', function (event) {
             //console.log('markerLost', event);
             var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
-            //displaySlider(false, index);
+            displaySlider(false, index);
         });
 
         // run the rendering loop
