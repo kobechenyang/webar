@@ -4,6 +4,8 @@ var camera, renderer, scene;
 var isLoadingModel;
 var markerGroup, directionalLight;
 
+bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
+
 var models = [
     {
         markerUrl: './data/pattern-jiao.patt',
