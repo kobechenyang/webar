@@ -8,7 +8,7 @@ html, body {
 #loading-overlay {
 position: absolute;
 width: 100%;
-top: 50%;
+top: 20%;
 visibility: hidden;
 display: flex;
 justify-content: center;
