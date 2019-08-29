@@ -7,26 +7,44 @@ var markerGroup, directionalLight;
 
 // bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
 const slider = document.getElementById("myRange");
-
+const slidecontainer = document.querySelector('.slidecontainer');
 document.addEventListener('touchmove',
     function(e) {
         e.preventDefault();
-        console.log("touchmove");
+        //console.log("touchmove");
 }, {passive:false});
 
-const mc = new Hammer(slider); // init hammer.js
+const mc = new Hammer(slidecontainer); // init hammer.js
   // get all 'pan' gestures with vertical direction
   mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
 
   // whenever the screen get's panned vertically on our ui (e.g. the user want's to scroll) ...
   mc.on("panmove", function(ev) {
+    //console.log(ev.deltaX);
     switch (ev.direction) { // find the direction of panning
       case 4: // right
-        slider.scrollBy(0, 10); // scroll down the ui div by 10 pixels (might need to adjust on different devices)
+        slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
+        //console.log(slider.value);
+        var v = Math.max(1, slider.value/100);
+        //models[index].scale = v;
+        //console.log("slider " + v);
+        var model = markerGroup.getObjectByName("model");
+        if(model)
+            model.scale.set(0.01*v, 0.01*v, 0.01*v);
+        setDirectionligthSize(v);
         break;
-      case 2: // left
-        slider.scrollBy(0, -10); // scroll up the ui div by 10 pixels
+    case 2: // right
+        slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
+        //console.log(slider.value);
+        var v = Math.max(1, slider.value/100);
+        //models[index].scale = v;
+        //console.log("slider " + v);
+        var model = markerGroup.getObjectByName("model");
+        if(model)
+            model.scale.set(0.01*v, 0.01*v, 0.01*v);
+        setDirectionligthSize(v);
         break;
+    
       default:
         break;
     }
@@ -143,13 +161,14 @@ function displaySlider(isFound, index){
     }else if(currentmodel){
         //console.log('displaySlider visible' + models[index].scale);
         slider.style.visibility = 'visible';
-        slider.value = models[index].scale * 100;
+        //slider.value = models[index].scale * 100;
         setDirectionligthSize(models[index].scale);
         slider.oninput = function() {
-            var v = Math.max(1, this.value/100);
-            models[index].scale = v;
-            models[index].model.scale.set(0.01*v, 0.01*v, 0.01*v);
-            setDirectionligthSize(models[index].scale);
+            // var v = Math.max(1, this.value/100);
+            // models[index].scale = v;
+            // console.log("slider " + v);
+            // models[index].model.scale.set(0.01*v, 0.01*v, 0.01*v);
+            // setDirectionligthSize(models[index].scale);
             //console.log("slider " + v);
         }
     }
