@@ -43,8 +43,9 @@ width: 5%;
     bottom: 40px;
     display: flex;
     visibility: hidden;
+    justify-content: center;
+    align-items: center;
     width: 100%; /* Width of the outside container */
-    height: 100%; 
 }
   
 /* The slider itself */
