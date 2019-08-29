@@ -8,6 +8,12 @@ var markerGroup, directionalLight;
 // bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
 const slider = document.getElementById("myRange");
 
+document.addEventListener('touchmove',
+    function(e) {
+        e.preventDefault();
+        console.log("touchmove");
+}, {passive:false});
+
 var models = [
     {
         markerUrl: './data/pattern-jiao.patt',
