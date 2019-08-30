@@ -14,10 +14,15 @@ document.addEventListener('touchmove',
         //console.log("touchmove");
     }, { passive: false });
 
-const mc = new Hammer(slidecontainer); // init hammer.js
+var mc = new Hammer.Manager(slidecontainer);
+
+    // add the pinch recognizer
+    mc.add(new Hammer.Pinch({ threshold: 0 }));
+    
+    // listen to the events!
+// const mc = new Hammer(slidecontainer); // init hammer.js
 // get all 'pan' gestures with vertical direction
 // mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
-mc.get("pinch").set({ threshold: 2 });
 mc.on("pinch", function (ev) {
     console.log(ev);
 });
