@@ -23,14 +23,24 @@ var mc = new Hammer.Manager(slidecontainer);
 // const mc = new Hammer(slidecontainer); // init hammer.js
 // get all 'pan' gestures with vertical direction
 // mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
+let modelSize;
 mc.on("pinchmove", function (ev) {
     console.log(ev.scale);
     const model = markerGroup.getObjectByName("model");//markerGroup.visible &&
-    if( model){
-        let size = Math.max(1, 100*model.scale.x*ev.scale);
+    if( markerGroup.visiable && model && modelSize){
+        let size = Math.max(1, modelSize*ev.scale);
         size = Math.min(size, 5);
         model.scale.set(0.01*size, 0.01*size, 0.01*size);
         setDirectionligthSize(size);
+    }
+});
+
+mc.on( "pinchstart", function( e ) {
+    const model = markerGroup.getObjectByName("model");//markerGroup.visible &&
+    if( markerGroup.visiable && model){
+        modelSize = model.scale.x*100;
+    }else{
+        modelSize = null;
     }
 });
 
