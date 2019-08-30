@@ -9,54 +9,46 @@ var markerGroup, directionalLight;
 const slider = document.getElementById("myRange");
 const slidecontainer = document.querySelector('.slidecontainer');
 document.addEventListener('touchmove',
-    function (e) {
+    function(e) {
         e.preventDefault();
         //console.log("touchmove");
-    }, { passive: false });
+}, {passive:false});
 
-var mc = new Hammer.Manager(slidecontainer);
+const mc = new Hammer(slidecontainer); // init hammer.js
+  // get all 'pan' gestures with vertical direction
+  mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
 
-    // add the pinch recognizer
-    mc.add(new Hammer.Pinch({ threshold: 0 }));
+  // whenever the screen get's panned vertically on our ui (e.g. the user want's to scroll) ...
+  mc.on("panmove", function(ev) {
+    //console.log(ev.deltaX);
+    switch (ev.direction) { // find the direction of panning
+      case 4: // right
+        slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
+        //console.log(slider.value);
+        var v = Math.max(1, slider.value/100);
+        //models[index].scale = v;
+        //console.log("slider " + v);
+        var model = markerGroup.getObjectByName("model");
+        if(model)
+            model.scale.set(0.01*v, 0.01*v, 0.01*v);
+        setDirectionligthSize(v);
+        break;
+    case 2: // right
+        slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
+        //console.log(slider.value);
+        var v = Math.max(1, slider.value/100);
+        //models[index].scale = v;
+        //console.log("slider " + v);
+        var model = markerGroup.getObjectByName("model");
+        if(model)
+            model.scale.set(0.01*v, 0.01*v, 0.01*v);
+        setDirectionligthSize(v);
+        break;
     
-    // listen to the events!
-// const mc = new Hammer(slidecontainer); // init hammer.js
-// get all 'pan' gestures with vertical direction
-// mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
-mc.on("pinch", function (ev) {
-    console.log(ev);
-});
-// whenever the screen get's panned vertically on our ui (e.g. the user want's to scroll) ...
-// mc.on("panmove", function (ev) {
-//     //console.log(ev.deltaX);
-//     switch (ev.direction) { // find the direction of panning
-//         case 4: // right
-//             slider.value = 200 + ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
-//             //console.log(slider.value);
-//             var v = Math.max(1, slider.value / 100);
-//             //models[index].scale = v;
-//             //console.log("slider " + v);
-//             var model = markerGroup.getObjectByName("model");
-//             if (model)
-//                 model.scale.set(0.01 * v, 0.01 * v, 0.01 * v);
-//             setDirectionligthSize(v);
-//             break;
-//         case 2: // right
-//             slider.value = 200 + ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
-//             //console.log(slider.value);
-//             var v = Math.max(1, slider.value / 100);
-//             //models[index].scale = v;
-//             //console.log("slider " + v);
-//             var model = markerGroup.getObjectByName("model");
-//             if (model)
-//                 model.scale.set(0.01 * v, 0.01 * v, 0.01 * v);
-//             setDirectionligthSize(v);
-//             break;
-
-//         default:
-//             break;
-//     }
-// });
+      default:
+        break;
+    }
+  });
 
 
 var models = [
@@ -133,7 +125,7 @@ function initLoadingManager() {
         // }
     };
 
-    manager.onProgress = function (url, itemsLoaded, itemsTotal) {
+    manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
         progressBar.style.width = (itemsLoaded / itemsTotal * 100) + '%';
         //animateBar( (itemsLoaded-1)*100/itemsTotal, itemsLoaded*100/itemsTotal);
         //console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
@@ -161,17 +153,17 @@ function initLoadingManager() {
     return manager;
 }
 
-function displaySlider(isFound, index) {
+function displaySlider(isFound, index){
     var currentmodel = markerGroup.getObjectByName("model");
-    if (!isFound) {
+    if(!isFound){
         //console.log('displaySlider hidden');
         //slider.style.visibility = 'hidden';
-    } else if (currentmodel) {
+    }else if(currentmodel){
         //console.log('displaySlider visible' + models[index].scale);
         slider.style.visibility = 'visible';
         //slider.value = models[index].scale * 100;
         setDirectionligthSize(models[index].scale);
-        slider.oninput = function () {
+        slider.oninput = function() {
             // var v = Math.max(1, this.value/100);
             // models[index].scale = v;
             // console.log("slider " + v);
@@ -182,13 +174,14 @@ function displaySlider(isFound, index) {
     }
 }
 
-function setDirectionligthSize(size) {
-    if (!directionalLight || size < 0 || size > 5)
+function setDirectionligthSize(size)
+{
+    if(!directionalLight || size<0||size>5)
         return;
-    directionalLight.shadow.camera.bottom = -1 - size;
-    directionalLight.shadow.camera.top = 1 + size;
-    directionalLight.shadow.camera.right = 1 + size;
-    directionalLight.shadow.camera.left = -1 - size;
+    directionalLight.shadow.camera.bottom = -1-size;
+    directionalLight.shadow.camera.top = 1+size;
+    directionalLight.shadow.camera.right = 1+size;
+    directionalLight.shadow.camera.left = -1-size;
 }
 
 function loadModel(index) {
@@ -228,19 +221,19 @@ function loadModel(index) {
             }
         });
         //gltf.scene.position.set(-0.8, 0, 0.5);
-
+        
         gltf.scene.name = "model";
         var oldModel = markerGroup.getObjectByName("model");
         if (oldModel !== null)
             markerGroup.remove(oldModel);
         markerGroup.add(gltf.scene);
         var scale = models[index].scale;
-        gltf.scene.scale.set(0.01 * scale, 0.01 * scale, 0.01 * scale);
-        var newModel = { ...models[index], model: gltf.scene };
+        gltf.scene.scale.set(0.01*scale, 0.01*scale, 0.01*scale);
+        var newModel = {...models[index], model:gltf.scene};
         models[index] = newModel;
         isLoadingModel = false;
-        if (index >= 0 && index < models.length - 1) //dont display for last one
-            displaySlider(true, index);
+        if(index>=0&&index<models.length-1) //dont display for last one
+           displaySlider(true, index);
     }, manager.onProgress, manager.onError);
 }
 
@@ -287,9 +280,9 @@ function init() {
     var source = new THREEAR.Source({ renderer, camera });
     THREEAR.initialize({ source: source, lostTimeout: 100 }).then((controller) => {
 
-        loadModel(models.length - 1);
+        loadModel(models.length-1);
 
-        for (var i = 0; i < models.length - 1; i++) {
+        for (var i = 0; i < models.length-1; i++) {
             var markerUrl = models[i].markerUrl;
             console.log(markerUrl);
             var patternMarker = new THREEAR.PatternMarker({
@@ -302,7 +295,7 @@ function init() {
         }
 
         controller.addEventListener('markerFound', function (event) {
-            var index = models.findIndex(model => model.markerUrl === event.marker.patternUrl);
+            var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
             //console.log('markerFound', event.marker.patternUrl + " , index " + index);
             loadModel(index);
             displaySlider(true, index);
@@ -310,7 +303,7 @@ function init() {
 
         controller.addEventListener('markerLost', function (event) {
             //console.log('markerLost', event);
-            var index = models.findIndex(model => model.markerUrl === event.marker.patternUrl);
+            var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
             //displaySlider(false, index);
         });
 
