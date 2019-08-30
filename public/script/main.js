@@ -29,7 +29,7 @@ mc.on("pinch", function (ev) {
     if( model){
         let size = Math.max(1, 100*model.scale.x*ev.scale);
         size = Math.min(size, 10);
-        console.log(size + " , " + e.scale);
+        console.log(size + " , " + ev.scale);
         model.scale.set(0.01*size, 0.01*size, 0.01*size);
         setDirectionligthSize(size);
     }
