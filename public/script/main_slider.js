@@ -14,58 +14,40 @@ document.addEventListener('touchmove',
         //console.log("touchmove");
 }, {passive:false});
 
-var mc = new Hammer.Manager(slidecontainer);
-
-    // add the pinch recognizer
-    mc.add(new Hammer.Pinch({ threshold: 0 }));
-    
-    // listen to the events!
-// const mc = new Hammer(slidecontainer); // init hammer.js
-// get all 'pan' gestures with vertical direction
-// mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
-mc.on("pinch", function (ev) {
-    console.log(ev.scale);
-});
-
-mc.on( "pinchend", function( e ) {
-    const model = markerGroup.getObjectByName("model");
-    if(markerGroup.object3D.visible && model){
-        const size = Math.clamp(1, 10, model.scale*e.scale);
-        model.scale.set(0.01*size, 0.01*size, 0.01*size);
-        setDirectionligthSize(size);
-    }
-});
+const mc = new Hammer(slidecontainer); // init hammer.js
+  // get all 'pan' gestures with vertical direction
+  mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
 
   // whenever the screen get's panned vertically on our ui (e.g. the user want's to scroll) ...
-//   mc.on("panmove", function(ev) {
-//     //console.log(ev.deltaX);
-//     switch (ev.direction) { // find the direction of panning
-//       case 4: // right
-//         slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
-//         //console.log(slider.value);
-//         var v = Math.max(1, slider.value/100);
-//         //models[index].scale = v;
-//         //console.log("slider " + v);
-//         var model = markerGroup.getObjectByName("model");
-//         if(model)
-//             model.scale.set(0.01*v, 0.01*v, 0.01*v);
-//         setDirectionligthSize(v);
-//         break;
-//     case 2: // right
-//         slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
-//         //console.log(slider.value);
-//         var v = Math.max(1, slider.value/100);
-//         //models[index].scale = v;
-//         //console.log("slider " + v);
-//         var model = markerGroup.getObjectByName("model");
-//         if(model)
-//             model.scale.set(0.01*v, 0.01*v, 0.01*v);
-//         setDirectionligthSize(v);
-//         break;
-//       default:
-//         break;
-//     }
-//   });
+  mc.on("panmove", function(ev) {
+    //console.log(ev.deltaX);
+    switch (ev.direction) { // find the direction of panning
+      case 4: // right
+        slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
+        //console.log(slider.value);
+        var v = Math.max(1, slider.value/100);
+        //models[index].scale = v;
+        //console.log("slider " + v);
+        var model = markerGroup.getObjectByName("model");
+        if(model)
+            model.scale.set(0.01*v, 0.01*v, 0.01*v);
+        setDirectionligthSize(v);
+        break;
+    case 2: // right
+        slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
+        //console.log(slider.value);
+        var v = Math.max(1, slider.value/100);
+        //models[index].scale = v;
+        //console.log("slider " + v);
+        var model = markerGroup.getObjectByName("model");
+        if(model)
+            model.scale.set(0.01*v, 0.01*v, 0.01*v);
+        setDirectionligthSize(v);
+        break;
+      default:
+        break;
+    }
+  });
 
 
 var models = [
