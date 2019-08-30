@@ -37,6 +37,13 @@ border-radius: inherit;
 width: 5%;
 }
 
+#touchPad {    
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
 .slidecontainer {
     position: absolute;
     bottom: 40px;

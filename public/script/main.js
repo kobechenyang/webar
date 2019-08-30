@@ -6,8 +6,8 @@ var isLoadingModel;
 var markerGroup, directionalLight;
 
 // bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
-const slider = document.getElementById("myRange");
-const slidecontainer = document.querySelector('.slidecontainer');
+// const slider = document.getElementById("myRange");
+const slidecontainer = document.getElementById("touchPad");
 document.addEventListener('touchmove',
     function(e) {
         e.preventDefault();
@@ -24,14 +24,14 @@ var mc = new Hammer.Manager(slidecontainer);
 // get all 'pan' gestures with vertical direction
 // mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
 mc.on("pinch", function (ev) {
-    //console.log(ev.scale);
+    console.log(ev.scale);
     const model = markerGroup.getObjectByName("model");//markerGroup.visible &&
     if( model){
-        // let size = Math.max(1, 100*model.scale.x*ev.scale);
-        // size = Math.min(size, 10);
-        // console.log(size + " , " + e.scale);
-        model.scale.set(0.01*ev.scale, 0.01*ev.scale, 0.01*ev.scale);
-        //setDirectionligthSize(size);
+        let size = Math.max(1, 100*model.scale.x*ev.scale);
+        size = Math.min(size, 10);
+        console.log(size + " , " + e.scale);
+        model.scale.set(0.01*size, 0.01*size, 0.01*size);
+        setDirectionligthSize(size);
     }
 });
 
@@ -258,8 +258,8 @@ function loadModel(index) {
         var newModel = {...models[index], model:gltf.scene};
         models[index] = newModel;
         isLoadingModel = false;
-        if(index>=0&&index<models.length-1) //dont display for last one
-           displaySlider(true, index);
+        //if(index>=0&&index<models.length-1) //dont display for last one
+          // displaySlider(true, index);
     }, manager.onProgress, manager.onError);
 }
 
@@ -324,7 +324,7 @@ function init() {
             var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
             //console.log('markerFound', event.marker.patternUrl + " , index " + index);
             loadModel(index);
-            displaySlider(true, index);
+            //displaySlider(true, index);
         });
 
         controller.addEventListener('markerLost', function (event) {
