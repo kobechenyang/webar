@@ -27,11 +27,11 @@ mc.on("pinch", function (ev) {
     //console.log(ev.scale);
     const model = markerGroup.getObjectByName("model");//markerGroup.visible &&
     if( model){
-        let size = Math.max(1, 100*model.scale.x*ev.scale);
-        size = Math.min(size, 10);
-        console.log(size + " , " + e.scale);
+        // let size = Math.max(1, 100*model.scale.x*ev.scale);
+        // size = Math.min(size, 10);
+        // console.log(size + " , " + e.scale);
         model.scale.set(0.01*ev.scale, 0.01*ev.scale, 0.01*ev.scale);
-        setDirectionligthSize(size);
+        //setDirectionligthSize(size);
     }
 });
 
