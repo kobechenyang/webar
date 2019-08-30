@@ -43,7 +43,6 @@ width: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
-    visibility: hidden;
     width: 100%; /* Width of the outside container */
     height: 100%;
 }

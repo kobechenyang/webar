@@ -25,11 +25,11 @@ var mc = new Hammer.Manager(slidecontainer);
 // mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 2 });
 mc.on("pinch", function (ev) {
     //console.log(ev.scale);
-    const model = markerGroup.getObjectByName("model");
-    if(markerGroup.visible && model){
+    const model = markerGroup.getObjectByName("model");//markerGroup.visible &&
+    if( model){
         const size = Math.clamp(1, 10, 100*model.scale.x*ev.scale);
         console.log(size + " , " + e.scale);
-        model.scale.set(0.01*size, 0.01*size, 0.01*size);
+        model.scale.set(0.01*ev.scale, 0.01*ev.scale, 0.01*ev.scale);
         setDirectionligthSize(size);
     }
 });
