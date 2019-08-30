@@ -28,6 +28,7 @@ mc.on("pinchmove", function (ev) {
     console.log(ev.scale);
     const model = markerGroup.getObjectByName("model");//markerGroup.visible &&
     if( markerGroup.visiable && model && modelSize){
+        console.log('pinchmove ' + modelSize);
         let size = Math.max(1, modelSize*ev.scale);
         size = Math.min(size, 5);
         model.scale.set(0.01*size, 0.01*size, 0.01*size);
@@ -37,8 +38,10 @@ mc.on("pinchmove", function (ev) {
 
 mc.on( "pinchstart", function( e ) {
     const model = markerGroup.getObjectByName("model");//markerGroup.visible &&
+    console.log('pinchstart');
     if( markerGroup.visiable && model){
         modelSize = model.scale.x*100;
+        console.log('modelSize ' + modelSize);
     }else{
         modelSize = null;
     }
