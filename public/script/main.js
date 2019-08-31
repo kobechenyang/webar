@@ -316,7 +316,7 @@ function init() {
     directionalLight.shadow.camera.left = -2;
 
     var source = new THREEAR.Source({ renderer, camera });
-    THREEAR.initialize({ source: source, lostTimeout: 100 }).then((controller) => {
+    THREEAR.initialize({ source: source, lostTimeout: 5000 }).then((controller) => {
 
         loadModel(models.length-1);
 
@@ -327,7 +327,7 @@ function init() {
                 patternUrl: markerUrl,
                 markerObject: markerGroup,
                 patternRatio: 0.8,
-                minConfidence: 0.4
+                minConfidence: 0.6
             });
             controller.trackMarker(patternMarker);
         }
@@ -339,11 +339,11 @@ function init() {
             //displaySlider(true, index);
         });
 
-        controller.addEventListener('markerLost', function (event) {
-            //console.log('markerLost', event);
-            var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
-            //displaySlider(false, index);
-        });
+        // controller.addEventListener('markerLost', function (event) {
+        //     //console.log('markerLost', event);
+        //     var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
+        //     //displaySlider(false, index);
+        // });
 
         // run the rendering loop
         var lastTimeMsec = 0;
