@@ -327,7 +327,7 @@ function init() {
                 patternUrl: markerUrl,
                 markerObject: markerGroup,
                 patternRatio: 0.8,
-                minConfidence: 0.4
+                minConfidence: 0.5
             });
             controller.trackMarker(patternMarker);
         }
