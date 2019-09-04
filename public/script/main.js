@@ -139,14 +139,14 @@ function initLoadingManager() {
 
     const updateAmount = 0.5; // in percent of bar width, should divide 100 evenly
 
-    const animateBar = (from, to) => {
-        percentComplete = Math.max(percentComplete, from);
-        percentComplete += updateAmount;
-        percentComplete = Math.min(percentComplete, to);
-        progressBar.style.width = percentComplete + '%';
+    // const animateBar = (from, to) => {
+    //     percentComplete = Math.max(percentComplete, from);
+    //     percentComplete += updateAmount;
+    //     percentComplete = Math.min(percentComplete, to);
+    //     progressBar.style.width = percentComplete + '%';
 
-        frameID = requestAnimationFrame(animateBar);
-    }
+    //     //frameID = requestAnimationFrame(animateBar);
+    // }
 
     manager.onStart = () => {
         // prevent the timer being set again
@@ -163,20 +163,20 @@ function initLoadingManager() {
         // }
     };
 
-    manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-        progressBar.style.width = (itemsLoaded / itemsTotal * 100) + '%';
-        //animateBar( (itemsLoaded-1)*100/itemsTotal, itemsLoaded*100/itemsTotal);
-        //console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
-    };
+    // manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+    //     //progressBar.style.width = (itemsLoaded / itemsTotal * 100) + '%';
+    //     //animateBar( (itemsLoaded-1)*100/itemsTotal, itemsLoaded*100/itemsTotal);
+    //     //console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    // };
 
     manager.onLoad = function () {
         //console.log('load');
         loadingOverlay.style.visibility = 'hidden';
         //loadingOverlay.classList.add('loading-overlay-hidden');
         // reset the bar in case we need to use it again
-        percentComplete = 0;
-        progressBar.style.width = 0;
-        cancelAnimationFrame(frameID);
+        // percentComplete = 0;
+        // progressBar.style.width = 0;
+       // cancelAnimationFrame(frameID);
 
     };
 
@@ -184,7 +184,7 @@ function initLoadingManager() {
 
         console.error(e);
 
-        progressBar.style.backgroundColor = 'red';
+        //progressBar.style.backgroundColor = 'red';
 
     }
 
