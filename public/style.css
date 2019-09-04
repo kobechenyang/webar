@@ -8,7 +8,7 @@ html, body {
 #loading-overlay {
 position: absolute;
 width: 100%;
-top: 30%;
+top: 35%;
 visibility: hidden;
 display: flex;
 justify-content: center;
@@ -93,13 +93,13 @@ cursor: pointer; /* Cursor on hover */
 
 .loader {
     color: #ffffff;
-    font-size: 90px;
+    font-size: 60px;
     text-indent: -9999em;
     overflow: hidden;
     width: 1em;
     height: 1em;
     border-radius: 50%;
-    margin: 72px auto;
+    margin: 42px auto;
     position: relative;
     -webkit-transform: translateZ(0);
     -ms-transform: translateZ(0);

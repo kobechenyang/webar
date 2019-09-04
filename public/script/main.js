@@ -318,8 +318,6 @@ function init() {
     var source = new THREEAR.Source({ renderer, camera });
     THREEAR.initialize({ source: source, lostTimeout: 5000 }).then((controller) => {
 
-        loadModel(models.length-1);
-
         for (var i = 0; i < models.length-1; i++) {
             var markerUrl = models[i].markerUrl;
             console.log(markerUrl);
