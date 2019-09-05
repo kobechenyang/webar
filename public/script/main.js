@@ -277,8 +277,8 @@ function loadModel(index) {
 
 function init() {
 
-    stats = new Stats();
-    document.body.appendChild(stats.dom);
+    // stats = new Stats();
+    // document.body.appendChild(stats.dom);
     isLoadingModel = false;
 
     renderer = new THREE.WebGLRenderer({
@@ -346,7 +346,7 @@ function init() {
         // run the rendering loop
         var lastTimeMsec = 0;
         requestAnimationFrame(function animate(nowMsec) {
-            stats.update();
+            // stats.update();
             // keep looping
             requestAnimationFrame(animate);
             // measure time
