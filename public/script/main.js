@@ -91,39 +91,39 @@ mc.on( "pinchstart", function( e ) {
 
 var models = [
     {
-        markerUrl: './data/pattern-jiao.patt',
-        modelUrl: './model/jiaolou/2019_08_08_135350_position_recolor.gltf',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-jiao.patt',
+        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/jiaolou/2019_08_08_135350_position_recolor.gltf',
         model: null,
         scale: 1
     },
     {
-        markerUrl: './data/pattern-tai.patt',
-        modelUrl: './model/taihe/2019_08_27_232519_.gltf',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-tai.patt',
+        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/taihe/2019_08_27_232519_.gltf',
         model: null,
         scale: 1
     },
     {
-        markerUrl: './data/pattern-bao.patt',
-        modelUrl: './model/baohe/2019_08_08_135350_position_recolor.gltf',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-bao.patt',
+        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/baohe/2019_08_08_135350_position_recolor.gltf',
         model: null,
         scale: 1
     },
     {
-        markerUrl: './data/pattern-zhong.patt',
-        modelUrl: './model/zhonghe/2019_08_08_135350_position_recolor.gltf',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-zhong.patt',
+        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/zhonghe/2019_08_08_135350_position_recolor.gltf',
         model: null,
         scale: 1
     },
     {
-        markerUrl: './data/pattern-wu.patt',
-        modelUrl: './model/wumen/2019_08_08_135350_position_recolor.gltf',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-wu.patt',
+        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/wumen/2019_08_08_135350_position_recolor.gltf',
         model: null,
         scale: 1
     },
     // last is the cloud
     {
         markerUrl: 'cloud',
-        modelUrl: './model/cloud/2019_08_08_135350_position_recolor.gltf',
+        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/cloud/2019_08_08_135350_position_recolor.gltf',
         model: null,
         scale: 1
     },
@@ -320,7 +320,7 @@ function init() {
 
         for (var i = 0; i < models.length-1; i++) {
             var markerUrl = models[i].markerUrl;
-            console.log(markerUrl);
+            //console.log(markerUrl);
             var patternMarker = new THREEAR.PatternMarker({
                 patternUrl: markerUrl,
                 markerObject: markerGroup,
