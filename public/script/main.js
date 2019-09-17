@@ -1,20 +1,30 @@
 import { GLTFLoader } from '../js/libs/GLTFLoader.js';
+import { OrbitControls } from '../js/libs/OrbitControls.js';
 import Stats from '../js/libs/stats.module.js';
 
-var camera, renderer, scene, stats;
-var isLoadingModel;
-var markerGroup, directionalLight;
+let camera, renderer, scene, stats, controls;
+let isLoadingModel;
+let markerGroup, directionalLight;
+let currentModelIndex = -1;
+let currentObservingModelIndex = -1;
 
-// bodyScrollLock.disableBodyScroll(document.getElementById("not-used"));
+bodyScrollLock.disableBodyScroll(document.getElementById("canvas"));
 // const slider = document.getElementById("myRange");
-const slidecontainer = document.getElementById("touchPad");
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingOverlayParent = loadingOverlay.parentNode;
+
+const touchPad = document.getElementById("touchPad");
+const touchPadParent = touchPad.parentNode;
+
 document.addEventListener('touchmove',
     function(e) {
         e.preventDefault();
         //console.log("touchmove");
 }, {passive:false});
 
-var mc = new Hammer.Manager(slidecontainer);
+var pickUpButton = document.getElementById('BtnClick');
+
+var mc = new Hammer.Manager(touchPad);
 
     // add the pinch recognizer
     mc.add(new Hammer.Pinch({ threshold: 0 }));
@@ -47,106 +57,43 @@ mc.on( "pinchstart", function( e ) {
     }
 });
 
-// mc.on( "pinchend", function( e ) {
-//     const model = markerGroup.getObjectByName("model");
-//     if(markerGroup.object3D.visible && model){
-//         const size = Math.clamp(1, 10, 100*model.scale.x*e.scale);
-//         console.log(size + " , " + e.scale);
-//         model.scale.set(0.01*size, 0.01*size, 0.01*size);
-//         setDirectionligthSize(size);
-//     }
-// });
-
-  // whenever the screen get's panned vertically on our ui (e.g. the user want's to scroll) ...
-//   mc.on("panmove", function(ev) {
-//     //console.log(ev.deltaX);
-//     switch (ev.direction) { // find the direction of panning
-//       case 4: // right
-//         slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
-//         //console.log(slider.value);
-//         var v = Math.max(1, slider.value/100);
-//         //models[index].scale = v;
-//         //console.log("slider " + v);
-//         var model = markerGroup.getObjectByName("model");
-//         if(model)
-//             model.scale.set(0.01*v, 0.01*v, 0.01*v);
-//         setDirectionligthSize(v);
-//         break;
-//     case 2: // right
-//         slider.value = 200+ev.deltaX; // scroll down the ui div by 10 pixels (might need to adjust on different devices)
-//         //console.log(slider.value);
-//         var v = Math.max(1, slider.value/100);
-//         //models[index].scale = v;
-//         //console.log("slider " + v);
-//         var model = markerGroup.getObjectByName("model");
-//         if(model)
-//             model.scale.set(0.01*v, 0.01*v, 0.01*v);
-//         setDirectionligthSize(v);
-//         break;
-//       default:
-//         break;
-//     }
-//   });
-
 
 var models = [
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-jiao2.patt',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-jiao.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/jiaolou/2019_08_08_135350_position_recolor.gltf',
-        model: null,
         scale: 1
     },
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-tai2.patt',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-tai.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/taihe/2019_08_27_232519_.gltf',
-        model: null,
         scale: 1
     },
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-bao2.patt',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-bao.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/baohe/2019_08_08_135350_position_recolor.gltf',
-        model: null,
         scale: 1
     },
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-zhong2.patt',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-zhong.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/zhonghe/2019_08_08_135350_position_recolor.gltf',
-        model: null,
         scale: 1
     },
     {
         markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-wu.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/wumen/2019_08_08_135350_position_recolor.gltf',
-        model: null,
         scale: 1
-    },
-    // last is the cloud
-    {
-        markerUrl: 'cloud',
-        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/cloud/2019_08_08_135350_position_recolor.gltf',
-        model: null,
-        scale: 1
-    },
+    }
 ];
 
 function initLoadingManager() {
 
     const manager = new THREE.LoadingManager();
     const progressBar = document.querySelector('#progress');
-    const loadingOverlay = document.querySelector('#loading-overlay');
     let percentComplete = 1;
     let frameID = null;
 
     const updateAmount = 0.5; // in percent of bar width, should divide 100 evenly
-
-    // const animateBar = (from, to) => {
-    //     percentComplete = Math.max(percentComplete, from);
-    //     percentComplete += updateAmount;
-    //     percentComplete = Math.min(percentComplete, to);
-    //     progressBar.style.width = percentComplete + '%';
-
-    //     //frameID = requestAnimationFrame(animateBar);
-    // }
 
     manager.onStart = () => {
         // prevent the timer being set again
@@ -154,62 +101,21 @@ function initLoadingManager() {
         if (frameID !== null) return;
         //console.log('start');
         loadingOverlay.style.visibility = 'visible';
-        // if(models[models.length-1].model!=null)
-        // {
-        //     var oldModel = markerGroup.getObjectByName("model");
-        //     if (oldModel !== null)
-        //         markerGroup.remove(oldModel);
-        //     markerGroup.add(models[models.length-1].model);
-        // }
     };
-
-    // manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-    //     //progressBar.style.width = (itemsLoaded / itemsTotal * 100) + '%';
-    //     //animateBar( (itemsLoaded-1)*100/itemsTotal, itemsLoaded*100/itemsTotal);
-    //     //console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
-    // };
 
     manager.onLoad = function () {
         //console.log('load');
         loadingOverlay.style.visibility = 'hidden';
-        //loadingOverlay.classList.add('loading-overlay-hidden');
-        // reset the bar in case we need to use it again
-        // percentComplete = 0;
-        // progressBar.style.width = 0;
-       // cancelAnimationFrame(frameID);
-
     };
 
     manager.onError = function (e) {
 
         console.error(e);
-
         //progressBar.style.backgroundColor = 'red';
 
     }
 
     return manager;
-}
-
-function displaySlider(isFound, index){
-    var currentmodel = markerGroup.getObjectByName("model");
-    if(!isFound){
-        //console.log('displaySlider hidden');
-        //slider.style.visibility = 'hidden';
-    }else if(currentmodel){
-        //console.log('displaySlider visible' + models[index].scale);
-        slider.style.visibility = 'visible';
-        //slider.value = models[index].scale * 100;
-        setDirectionligthSize(models[index].scale);
-        slider.oninput = function() {
-            // var v = Math.max(1, this.value/100);
-            // models[index].scale = v;
-            // console.log("slider " + v);
-            // models[index].model.scale.set(0.01*v, 0.01*v, 0.01*v);
-            // setDirectionligthSize(models[index].scale);
-            //console.log("slider " + v);
-        }
-    }
 }
 
 function setDirectionligthSize(size)
@@ -222,25 +128,66 @@ function setDirectionligthSize(size)
     directionalLight.shadow.camera.left = -1-size;
 }
 
+function pickup(){
+     //markerGroup.visible &&
+    var model = markerGroup.getObjectByName("model");
+    if (model !== null){
+        //difference between attach and remove+add is wether keeping the localposition or not
+        markerGroup.remove(model);
+        scene.add(model);
+        //markerGroup.remove(directionalLight);
+        scene.attach(directionalLight);
+        directionalLight.position.set(0.3, 0.8, 0.3);
+        //console.log(directionalLight.getWorldPosition());
+        model = scene.getObjectByName("model");
+        directionalLight.target = model;
+        touchPadParent.removeChild(touchPad);
+        loadingOverlayParent.removeChild(loadingOverlay);
+        camera.position.set( 0, 0.5, 1.5 );
+        camera.up = new THREE.Vector3(0,1,0);
+        camera.lookAt(new THREE.Vector3(0,2,0));
+        controls.minDistance = 1;
+        // var tween = new TWEEN.Tween(model.position)
+        // .to(THREE.Vector3(0,0,0), 1000)
+        // .start();
+        // .set(0, 0, 0);
+        controls.target.set( 0, 0, 0);
+        controls.update();
+        currentObservingModelIndex = currentModelIndex;
+        currentModelIndex = -1;
+        pickUpButton.textContent = "放下";
+    }
+     
+}
+
+function putdown(){
+    //markerGroup.visible &&
+    var model = scene.getObjectByName("model");
+    if (model !== null){
+        //console.log("putdown");
+        scene.remove(model);
+        // markerGroup.attach(directionalLight);
+        touchPadParent.prepend(touchPad);
+        loadingOverlayParent.prepend(loadingOverlay);
+        controls.minDistance = 0;
+        camera.position.set( 0, 0, 0 );
+        camera.up = new THREE.Vector3(0,1,0);
+        camera.lookAt(new THREE.Vector3(0,0,0));
+        currentObservingModelIndex = -1;
+        currentModelIndex = -1;
+        pickUpButton.textContent = "拾起";
+    }
+    
+}
+
 function loadModel(index) {
     if (index < 0 || index >= models.length) {
         console.error('marker index is not valid');
         return;
     }
-    if (isLoadingModel) {
+    if (isLoadingModel || index===currentModelIndex) { //model already loaded
         //console.log('model is loading');
         return;
-    }
-    var oldModel = markerGroup.getObjectByName("model");
-    if (oldModel !== null && oldModel === models[index].model) {
-        //console.log(models[index].model.name + 'already on marker');
-        return;
-    }
-    if (models[index].model !== null) {
-        //console.log(models[index].model.name);
-        if (oldModel !== null)
-            markerGroup.remove(oldModel);
-        markerGroup.add(models[index].model);
     }
     isLoadingModel = true;
     var manager = initLoadingManager();
@@ -258,21 +205,56 @@ function loadModel(index) {
                 child.receiveShadow = true;
             }
         });
-        //gltf.scene.position.set(-0.8, 0, 0.5);
         
         gltf.scene.name = "model";
         var oldModel = markerGroup.getObjectByName("model");
         if (oldModel !== null)
             markerGroup.remove(oldModel);
         markerGroup.add(gltf.scene);
+        markerGroup.attach(directionalLight);
+        directionalLight.position.set(0.3, 0.8, 0.3);
+        directionalLight.target = markerGroup;
+
+        // scene.add(gltf.scene);
         var scale = models[index].scale;
+        
+        gltf.scene.scale.set(0.01, 0.01, 0.01);
+
         gltf.scene.scale.set(0.01*scale, 0.01*scale, 0.01*scale);
-        var newModel = {...models[index], model:gltf.scene};
-        models[index] = newModel;
+        currentModelIndex = index;
         isLoadingModel = false;
-        //if(index>=0&&index<models.length-1) //dont display for last one
-          // displaySlider(true, index);
+        
     }, manager.onProgress, manager.onError);
+}
+
+function update(){
+    // console.log("currentObservingModelIndex " + currentObservingModelIndex);
+    // console.log("currentModelIndex " + currentModelIndex);
+    if(!markerGroup){
+        currentObservingModelIndex = -1;
+        currentModelIndex = -1;
+        return;
+    }
+    if( (markerGroup.visible && currentModelIndex>=0) ||currentObservingModelIndex>=0 ){
+        if(pickUpButton.style.visibility!=="visible")
+            pickUpButton.style.visibility = "visible";
+    }else {
+        currentModelIndex = -1;
+        pickUpButton.style.visibility = "hidden";
+    }
+    if(pickUpButton.style.visibility!=="visible")
+        return;
+    if(currentModelIndex>=0){
+        pickUpButton.textContent = "拾起";
+        pickUpButton.removeEventListener("click", pickup);
+        pickUpButton.removeEventListener("click", putdown);
+        pickUpButton.addEventListener("click", pickup);
+    }else if(currentObservingModelIndex>=0){
+        pickUpButton.textContent = "放下";
+        pickUpButton.removeEventListener("click", putdown);
+        pickUpButton.removeEventListener("click", pickup);
+        pickUpButton.addEventListener("click",  putdown);
+    }
 }
 
 function init() {
@@ -294,27 +276,39 @@ function init() {
 
     // init scene and camera
     scene = new THREE.Scene();
-    camera = new THREE.Camera();
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 20 );
+    // camera.position.set( 0, 0.5, 1.5 );
+    // camera.up = new THREE.Vector3(0,1,0);
+    // camera.lookAt(new THREE.Vector3(0,1,0));
     scene.add(camera);
 
     markerGroup = new THREE.Group();
     scene.add(markerGroup);
 
+    controls = new OrbitControls( camera, renderer.domElement );
+    controls.screenSpacePanning = false;
+
+    controls.minDistance = 0;
+    controls.maxDistance = 4;
+
+    controls.maxPolarAngle = Math.PI / 2;
     var light = new THREE.HemisphereLight(0xffffff, 0x9797A0, 1);
     scene.add(light);
     directionalLight = new THREE.DirectionalLight(0xffffff, 1, 10);
-    directionalLight.position.set(0.3, 0.8, 0.3).setLength(10);
+    directionalLight.name = "directionaLight";
 
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.set(1024, 1024);
     directionalLight.target = markerGroup;
-    markerGroup.add(directionalLight);
 
     directionalLight.shadow.camera.bottom = -2;
     directionalLight.shadow.camera.top = 2; //5;
     directionalLight.shadow.camera.right = 2;
     directionalLight.shadow.camera.left = -2;
-
+    markerGroup.add(directionalLight);
+    
+    directionalLight.position.set(0.3, 0.8, 0.3);
+    
     var source = new THREEAR.Source({ renderer, camera });
     THREEAR.initialize({ source: source, lostTimeout: 5000 }).then((controller) => {
 
@@ -329,12 +323,13 @@ function init() {
             });
             controller.trackMarker(patternMarker);
         }
-
         controller.addEventListener('markerFound', function (event) {
-            var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
-            //console.log('markerFound', event.marker.patternUrl + " , index " + index);
-            loadModel(index);
-            //displaySlider(true, index);
+            if(currentObservingModelIndex<0){
+                var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
+                
+                console.log('markerFound', event.marker.patternUrl + " , index " + index);
+                loadModel(index);
+            }
         });
 
         // controller.addEventListener('markerLost', function (event) {
@@ -348,12 +343,15 @@ function init() {
         requestAnimationFrame(function animate(nowMsec) {
             // stats.update();
             // keep looping
+            update();
+            // TWEEN.update(nowMsec);
             requestAnimationFrame(animate);
             // measure time
             lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60;
             var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
             lastTimeMsec = nowMsec;
             // call each update function
+            controls.update();
             controller.update(source.domElement);
             renderer.render(scene, camera);
         });

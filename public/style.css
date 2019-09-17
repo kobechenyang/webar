@@ -4,7 +4,14 @@ html, body {
     height: 100%;
     overflow: hidden;
 }
-  
+
+/* #canvas {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+} */
+
 #loading-overlay {
 position: absolute;
 width: 100%;
@@ -42,6 +49,21 @@ width: 5%;
     height: 100%;
     width: 100%;
     text-align: center;
+}
+
+.app-download-btn {
+  position: absolute;
+  width:50%;
+  height:40px;
+  line-height:40px;
+  left: 25%;
+  top: 90%;
+  font-size:18px;
+  color:#2466f4;
+  border-radius:20px;
+  border:.5px #2466f4 solid;
+  text-decoration:none;
+  visibility: hidden
 }
 
 .slidecontainer {
