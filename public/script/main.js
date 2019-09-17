@@ -165,7 +165,9 @@ function putdown(){
     var model = scene.getObjectByName("model");
     if (model !== null){
         //console.log("putdown");
+        model.dispose();
         scene.remove(model);
+
         // markerGroup.attach(directionalLight);
         touchPadParent.prepend(touchPad);
         loadingOverlayParent.prepend(loadingOverlay);
@@ -327,7 +329,7 @@ function init() {
             if(currentObservingModelIndex<0){
                 var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
                 
-                console.log('markerFound', event.marker.patternUrl + " , index " + index);
+                //console.log('markerFound', event.marker.patternUrl + " , index " + index);
                 loadModel(index);
             }
         });
