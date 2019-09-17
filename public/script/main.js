@@ -60,28 +60,28 @@ mc.on( "pinchstart", function( e ) {
 
 var models = [
     {
-        markerUrl: '../data/pattern-jiao.patt',
-        modelUrl: '../model/jiaolou/2019_08_08_135350_position_recolor.gltf',
+        markerUrl: './data/pattern-jiao.patt',
+        modelUrl: './model/jiaolou/2019_08_08_135350_position_recolor.gltf',
         scale: 1
     },
     {
-        markerUrl: '../data/pattern-tai.patt',
-        modelUrl: '../model/taihe/2019_08_27_232519_.gltf',
+        markerUrl: './data/pattern-tai.patt',
+        modelUrl: './model/taihe/2019_08_27_232519_.gltf',
         scale: 1
     },
     {
-        markerUrl: '../data/pattern-bao.patt',
-        modelUrl: '../model/baohe/2019_08_08_135350_position_recolor.gltf',
+        markerUrl: './data/pattern-bao.patt',
+        modelUrl: './model/baohe/2019_08_08_135350_position_recolor.gltf',
         scale: 1
     },
     {
-        markerUrl: '../data/pattern-zhong.patt',
-        modelUrl: '../model/zhonghe/2019_08_08_135350_position_recolor.gltf',
+        markerUrl: './data/pattern-zhong.patt',
+        modelUrl: './model/zhonghe/2019_08_08_135350_position_recolor.gltf',
         scale: 1
     },
     {
-        markerUrl: '../data/pattern-wu.patt',
-        modelUrl: '../model/wumen/2019_08_08_135350_position_recolor.gltf',
+        markerUrl: './data/pattern-wu.patt',
+        modelUrl: './model/wumen/2019_08_08_135350_position_recolor.gltf',
         scale: 1
     }
 ];
