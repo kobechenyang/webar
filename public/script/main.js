@@ -60,29 +60,34 @@ mc.on( "pinchstart", function( e ) {
 
 var models = [
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-jiao.patt',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-jiao3.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/jiaolou/2019_08_08_135350_position_recolor.gltf',
-        scale: 1
+        scale: 1,
+        offset: {x: 0.045, y:0, z:0.049}
     },
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-tai.patt',
-        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/taihe/2019_08_27_232519_.gltf',
-        scale: 1
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-tai3.patt',
+        modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/taihe/2019_08_08_135350_position_recolor.gltf',
+        scale: 1,
+        offset: {x: -0.005, y:0, z:0.106}
     },
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-bao.patt',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-bao3.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/baohe/2019_08_08_135350_position_recolor.gltf',
-        scale: 1
+        scale: 1,
+        offset: {x: 0, y:0, z:-0.129}
     },
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-zhong.patt',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-zhong3.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/zhonghe/2019_08_08_135350_position_recolor.gltf',
-        scale: 1
+        scale: 1,
+        offset: {x: 0.073, y:0, z:-0.085}
     },
     {
-        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-wu.patt',
+        markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-wu3.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/wumen/2019_08_08_135350_position_recolor.gltf',
-        scale: 1
+        scale: 1,
+        offset: {x: 0, y:0, z:0}
     }
 ];
 
@@ -219,7 +224,7 @@ function loadModel(index) {
 
         // scene.add(gltf.scene);
         var scale = models[index].scale;
-        
+        gltf.scene.position.set(models[index].offset.x, models[index].offset.y, models[index].offset.z);
         gltf.scene.scale.set(0.01, 0.01, 0.01);
 
         gltf.scene.scale.set(0.01*scale, 0.01*scale, 0.01*scale);
@@ -314,7 +319,7 @@ function init() {
     var source = new THREEAR.Source({ renderer, camera });
     THREEAR.initialize({ source: source, lostTimeout: 5000 }).then((controller) => {
 
-        for (var i = 0; i < models.length-1; i++) {
+        for (var i = 0; i < models.length; i++) {
             var markerUrl = models[i].markerUrl;
             //console.log(markerUrl);
             var patternMarker = new THREEAR.PatternMarker({
@@ -329,7 +334,6 @@ function init() {
             if(currentObservingModelIndex<0){
                 var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
                 
-                //console.log('markerFound', event.marker.patternUrl + " , index " + index);
                 loadModel(index);
             }
         });
