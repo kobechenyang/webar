@@ -63,25 +63,25 @@ var models = [
         markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-jiao3.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/jiaolou/2019_08_08_135350_position_recolor.gltf',
         scale: 1,
-        offset: {x: 0.045, y:0, z:0.049}
+        offset: {x: 0.00045, y:0, z:0.00049}
     },
     {
         markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-tai3.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/taihe/2019_08_08_135350_position_recolor.gltf',
         scale: 1,
-        offset: {x: -0.005, y:0, z:0.106}
+        offset: {x: -0.00005, y:0, z:0.00106}
     },
     {
         markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-bao3.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/baohe/2019_08_08_135350_position_recolor.gltf',
         scale: 1,
-        offset: {x: 0, y:0, z:-0.129}
+        offset: {x: 0, y:0, z:-0.00129}
     },
     {
         markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-zhong3.patt',
         modelUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/model/zhonghe/2019_08_08_135350_position_recolor.gltf',
         scale: 1,
-        offset: {x: 0.073, y:0, z:-0.085}
+        offset: {x: 0.00073, y:0, z:-0.00085}
     },
     {
         markerUrl: 'https://arjianzhu.s3.cn-north-1.amazonaws.com.cn/data/pattern-wu3.patt',
@@ -170,9 +170,6 @@ function putdown(){
     var model = scene.getObjectByName("model");
     if (model !== null){
         //console.log("putdown");
-        model.dispose();
-        scene.remove(model);
-
         // markerGroup.attach(directionalLight);
         touchPadParent.prepend(touchPad);
         loadingOverlayParent.prepend(loadingOverlay);
@@ -183,6 +180,8 @@ function putdown(){
         currentObservingModelIndex = -1;
         currentModelIndex = -1;
         pickUpButton.textContent = "拾起";
+        model.dispose();
+        scene.remove(model);
     }
     
 }
@@ -205,7 +204,7 @@ function loadModel(index) {
             // if(!child.name.includes("RootNode")&&!child.name.includes("polySurface"))
             //  	gltf.scene.remove(child);
             if (child.name.includes('ground')) {
-                child.material = new THREE.ShadowMaterial({ opacity: 0.7 });
+                child.material = new THREE.ShadowMaterial({ opacity: 0.5 });
             }
             if (child.isMesh) {
                 child.castShadow = true;
@@ -305,7 +304,7 @@ function init() {
     directionalLight.name = "directionaLight";
 
     directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.set(1024, 1024);
+    directionalLight.shadow.mapSize.set(2048, 2048);
     directionalLight.target = markerGroup;
 
     directionalLight.shadow.camera.bottom = -2;
@@ -334,6 +333,7 @@ function init() {
             if(currentObservingModelIndex<0){
                 var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
                 
+                console.log('markerFound', event.marker.patternUrl + " , index " + index);
                 loadModel(index);
             }
         });
