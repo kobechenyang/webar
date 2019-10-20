@@ -6,7 +6,6 @@ let camera, renderer, scene, stats, controls;
 let isLoadingModel;
 let markerGroup, directionalLight;
 let currentModelIndex = -1;
-let currentObservingModelIndex = -1;
 
 bodyScrollLock.disableBodyScroll(document.getElementById("canvas"));
 // const slider = document.getElementById("myRange");
@@ -158,8 +157,6 @@ function pickup(){
         // .set(0, 0, 0);
         controls.target.set( 0, 0, 0);
         controls.update();
-        currentObservingModelIndex = currentModelIndex;
-        currentModelIndex = -1;
         pickUpButton.textContent = "放下";
     }
      
@@ -177,7 +174,6 @@ function putdown(){
         camera.position.set( 0, 0, 0 );
         camera.up = new THREE.Vector3(0,1,0);
         camera.lookAt(new THREE.Vector3(0,0,0));
-        currentObservingModelIndex = -1;
         currentModelIndex = -1;
         pickUpButton.textContent = "拾起";
         model.dispose();
@@ -191,8 +187,14 @@ function loadModel(index) {
         console.error('marker index is not valid');
         return;
     }
-    if (isLoadingModel || index===currentModelIndex) { //model already loaded
+    if (isLoadingModel) { //model already loaded
         //console.log('model is loading');
+        return;
+    }
+    if(index===currentModelIndex){
+        camera.position.set( 0, 0, 0 );
+        camera.up = new THREE.Vector3(0,1,0);
+        camera.lookAt(new THREE.Vector3(0,0,0));
         return;
     }
     isLoadingModel = true;
@@ -237,25 +239,28 @@ function update(){
     // console.log("currentObservingModelIndex " + currentObservingModelIndex);
     // console.log("currentModelIndex " + currentModelIndex);
     if(!markerGroup){
-        currentObservingModelIndex = -1;
-        currentModelIndex = -1;
         return;
     }
-    if( (markerGroup.visible && currentModelIndex>=0) ||currentObservingModelIndex>=0 ){
-        if(pickUpButton.style.visibility!=="visible")
-            pickUpButton.style.visibility = "visible";
-    }else {
+    const isAR = markerGroup.visible && markerGroup.getObjectByName("model");
+    const is3D = !markerGroup.getObjectByName("model") && scene.getObjectByName("model");
+    //console.log("visible" + markerGroup.visible + " ,  isAR " + isAR + " is3D " + is3D);
+    if( !(markerGroup.visible && isAR) ){
         currentModelIndex = -1;
+    }
+    if( isAR || is3D) {
+        pickUpButton.style.visibility = "visible";
+    } else {
         pickUpButton.style.visibility = "hidden";
     }
+
     if(pickUpButton.style.visibility!=="visible")
         return;
-    if(currentModelIndex>=0){
+    if( isAR ){
         pickUpButton.textContent = "拾起";
         pickUpButton.removeEventListener("click", pickup);
         pickUpButton.removeEventListener("click", putdown);
         pickUpButton.addEventListener("click", pickup);
-    }else if(currentObservingModelIndex>=0){
+    }else if(is3D){
         pickUpButton.textContent = "放下";
         pickUpButton.removeEventListener("click", putdown);
         pickUpButton.removeEventListener("click", pickup);
@@ -330,10 +335,10 @@ function init() {
             controller.trackMarker(patternMarker);
         }
         controller.addEventListener('markerFound', function (event) {
-            if(currentObservingModelIndex<0){
+            const is3D = !markerGroup.getObjectByName("model") && scene.getObjectByName("model");
+            if(!is3D){
                 var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
-                
-                console.log('markerFound', event.marker.patternUrl + " , index " + index);
+                //console.log('markerFound', event.marker.patternUrl + " , index " + index);
                 loadModel(index);
             }
         });
