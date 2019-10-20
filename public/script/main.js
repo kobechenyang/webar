@@ -176,8 +176,8 @@ function putdown(){
         camera.lookAt(new THREE.Vector3(0,0,0));
         currentModelIndex = -1;
         pickUpButton.textContent = "拾起";
-        model.dispose();
         scene.remove(model);
+        model.dispose();
     }
     
 }
@@ -187,14 +187,8 @@ function loadModel(index) {
         console.error('marker index is not valid');
         return;
     }
-    if (isLoadingModel) { //model already loaded
+    if (isLoadingModel || index===currentModelIndex) { //model already loaded
         //console.log('model is loading');
-        return;
-    }
-    if(index===currentModelIndex){
-        camera.position.set( 0, 0, 0 );
-        camera.up = new THREE.Vector3(0,1,0);
-        camera.lookAt(new THREE.Vector3(0,0,0));
         return;
     }
     isLoadingModel = true;
@@ -216,8 +210,11 @@ function loadModel(index) {
         
         gltf.scene.name = "model";
         var oldModel = markerGroup.getObjectByName("model");
-        if (oldModel !== null)
+        if (oldModel !== null){
             markerGroup.remove(oldModel);
+            oldModel.dispose();
+        }
+            
         markerGroup.add(gltf.scene);
         markerGroup.attach(directionalLight);
         directionalLight.position.set(0.3, 0.8, 0.3);
