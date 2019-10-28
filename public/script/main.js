@@ -165,7 +165,7 @@ function pickup(){
 function putdown(){
     //markerGroup.visible &&
     var model = scene.getObjectByName("model");
-    if (model !== null){
+    if (model){
         //console.log("putdown");
         // markerGroup.attach(directionalLight);
         touchPadParent.prepend(touchPad);
@@ -179,7 +179,6 @@ function putdown(){
         scene.remove(model);
         model.dispose();
     }
-    
 }
 
 function loadModel(index) {
@@ -210,7 +209,7 @@ function loadModel(index) {
         
         gltf.scene.name = "model";
         var oldModel = markerGroup.getObjectByName("model");
-        if (oldModel !== null){
+        if (oldModel){
             markerGroup.remove(oldModel);
             oldModel.dispose();
         }
