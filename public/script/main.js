@@ -126,10 +126,10 @@ function setDirectionligthSize(size)
 {
     if(!directionalLight || size<0||size>5)
         return;
-    directionalLight.shadow.camera.bottom = -1-size;
-    directionalLight.shadow.camera.top = 1+size;
-    directionalLight.shadow.camera.right = 1+size;
-    directionalLight.shadow.camera.left = -1-size;
+    directionalLight.shadow.camera.bottom = -2-size;
+    directionalLight.shadow.camera.top = 2+size;
+    directionalLight.shadow.camera.right = 2+size;
+    directionalLight.shadow.camera.left = -2-size;
 }
 
 function pickup(){
