@@ -41,7 +41,7 @@ mc.on("pinchmove", function (ev) {
         let size = Math.max(1, modelSize*ev.scale);
         size = Math.min(size, 5);
         model.scale.set(0.01*size, 0.01*size, 0.01*size);
-        setDirectionligthSize(size);
+        //setDirectionligthSize(size);
     }
 });
 
@@ -126,10 +126,11 @@ function setDirectionligthSize(size)
 {
     if(!directionalLight || size<0||size>5)
         return;
-    directionalLight.shadow.camera.bottom = -2-size;
-    directionalLight.shadow.camera.top = 2+size;
-    directionalLight.shadow.camera.right = 2+size;
-    directionalLight.shadow.camera.left = -2-size;
+    // console.log("setDirectionligthSize");
+    directionalLight.shadow.camera.bottom = -10;
+    directionalLight.shadow.camera.top = 10;
+    directionalLight.shadow.camera.right = 10;
+    directionalLight.shadow.camera.left = -10;
 }
 
 function pickup(){
@@ -141,7 +142,7 @@ function pickup(){
         scene.add(model);
         //markerGroup.remove(directionalLight);
         scene.attach(directionalLight);
-        directionalLight.position.set(0.3, 0.8, 0.3);
+        directionalLight.position.set(0.6, 1.6, 0.6);
         //console.log(directionalLight.getWorldPosition());
         model = scene.getObjectByName("model");
         directionalLight.target = model;
@@ -177,7 +178,7 @@ function putdown(){
         currentModelIndex = -1;
         pickUpButton.textContent = "拾起";
         scene.remove(model);
-        model.dispose();
+        //model.dispose();
     }
 }
 
@@ -190,9 +191,13 @@ function loadModel(index) {
         //console.log('model is loading');
         return;
     }
+    
     isLoadingModel = true;
+    
     var manager = initLoadingManager();
     var loader = new GLTFLoader(manager);
+    
+    // console.log("loading " + models[index].modelUrl + "currentModelIndex " + currentModelIndex);
     loader.load(models[index].modelUrl, function (gltf) {
 
         gltf.scene.traverse(function (child) {
@@ -210,13 +215,14 @@ function loadModel(index) {
         gltf.scene.name = "model";
         var oldModel = markerGroup.getObjectByName("model");
         if (oldModel){
+            // console.log("remove model currentModelIndex " + currentModelIndex);
             markerGroup.remove(oldModel);
-            oldModel.dispose();
+            //oldModel.dispose();
         }
             
         markerGroup.add(gltf.scene);
         markerGroup.attach(directionalLight);
-        directionalLight.position.set(0.3, 0.8, 0.3);
+        directionalLight.position.set(0.6, 1.6, 0.6);
         directionalLight.target = markerGroup;
 
         // scene.add(gltf.scene);
@@ -227,6 +233,7 @@ function loadModel(index) {
         gltf.scene.scale.set(0.01*scale, 0.01*scale, 0.01*scale);
         currentModelIndex = index;
         isLoadingModel = false;
+        // console.log("loalded " + currentModelIndex);
         
     }, manager.onProgress, manager.onError);
 }
@@ -237,7 +244,7 @@ function update(){
     if(!markerGroup){
         return;
     }
-    const isAR = markerGroup.visible && markerGroup.getObjectByName("model");
+    const isAR =  markerGroup.visible && markerGroup.getObjectByName("model");
     const is3D = !markerGroup.getObjectByName("model") && scene.getObjectByName("model");
     //console.log("visible" + markerGroup.visible + " ,  isAR " + isAR + " is3D " + is3D);
     if( !(markerGroup.visible && isAR) ){
@@ -252,11 +259,13 @@ function update(){
     if(pickUpButton.style.visibility!=="visible")
         return;
     if( isAR ){
+        // console.log("isAR" + currentModelIndex + markerGroup.getObjectByName("model").visible + JSON.stringify(markerGroup.getObjectByName("model").position) + JSON.stringify(markerGroup.getObjectByName("model").scale));
         pickUpButton.textContent = "拾起";
         pickUpButton.removeEventListener("click", pickup);
         pickUpButton.removeEventListener("click", putdown);
         pickUpButton.addEventListener("click", pickup);
     }else if(is3D){
+        // console.log("is3D");
         pickUpButton.textContent = "放下";
         pickUpButton.removeEventListener("click", putdown);
         pickUpButton.removeEventListener("click", pickup);
@@ -309,12 +318,13 @@ function init() {
     directionalLight.target = markerGroup;
 
     directionalLight.shadow.camera.bottom = -2;
-    directionalLight.shadow.camera.top = 2; //5;
+    directionalLight.shadow.camera.top = 2;
     directionalLight.shadow.camera.right = 2;
     directionalLight.shadow.camera.left = -2;
+
     markerGroup.add(directionalLight);
     
-    directionalLight.position.set(0.3, 0.8, 0.3);
+    directionalLight.position.set(0.6, 1.6, 0.6);
     
     var source = new THREEAR.Source({ renderer, camera });
     THREEAR.initialize({ source: source, lostTimeout: 5000 }).then((controller) => {
@@ -332,6 +342,7 @@ function init() {
         }
         controller.addEventListener('markerFound', function (event) {
             const is3D = !markerGroup.getObjectByName("model") && scene.getObjectByName("model");
+            // console.log('markerFound');
             if(!is3D){
                 var index = models.findIndex( model => model.markerUrl===event.marker.patternUrl);
                 //console.log('markerFound', event.marker.patternUrl + " , index " + index);
