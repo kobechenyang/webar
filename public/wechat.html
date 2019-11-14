@@ -12,23 +12,27 @@
 	body,html{width:100%;height:100%}
 	*{margin:0;padding:0}
 	body{background-color:#fff}
-	.top-bar-guidance{font-size:15px;color:#fff;height:40%;line-height:1.8;padding-left:20px;padding-top:20px;background:url(//gw.alicdn.com/tfs/TB1eSZaNFXXXXb.XXXXXXXXXXXX-750-234.png) center top/contain no-repeat}
-	.top-bar-guidance .icon-safari{width:25px;height:25px;vertical-align:middle;margin:0 .2em}
+	.top-bar-guidance{font-size:15px;color:#fff;height:100%;line-height:1.8;background:url(wechat_ios.jpg) center top/cover no-repeat}
+	.top-bar-guidance .text1{position: absolute; display:block; left:50%; text-align: right; top:10px; width:50%;height:40px; font-size:16px; font-family: HYA5GJ; }
+	.top-bar-guidance .text2{position: absolute; display:block; left:50%; text-align: right; top:40px; width:50%;height:40px; font-size:16px; font-family: HYA5GJ; }
 	.app-download-btn{display:block;width:214px;height:40px;line-height:40px;margin:18px auto 0 auto;text-align:center;font-size:18px;color:#2466f4;border-radius:20px;border:.5px #2466f4 solid;text-decoration:none}
 </style>
 </head>
 <body>
 	<div class="top-bar-guidance">
-		<p>
-			点击右上角<img src="//gw.alicdn.com/tfs/TB1xwiUNpXXXXaIXXXXXXXXXXXX-55-55.png" class="icon-safari"/> Safari打开
+		<!-- <p>
+			<img src="//gw.alicdn.com/tfs/TB1xwiUNpXXXXaIXXXXXXXXXXXX-55-55.png" class="icon-safari"/>
+		</p> -->
+		<p class="text1">
+			点击右上角 "···"
 		</p>
-		<p>
-			可以继续访问本站哦~
+		<p class="text2">
+			在"Safari"中打开
 		</p>
 	</div>
-	<a class="app-download-btn" id="BtnClick" href="javascript:;"> 点此继续访问 </a>
+	<a id="BtnClick" href="javascript:;"></a>
 	<script>
-		var url = 'http://www.google.com';//更改需要跳转的地址
+		var url = 'https://kobechenyang.github.io/webar/public';//更改需要跳转的地址
 		document.querySelector('body').addEventListener('touchmove', function (event) {
 			event.preventDefault();
 		});

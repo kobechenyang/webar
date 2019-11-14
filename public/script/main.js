@@ -1,8 +1,7 @@
 import { GLTFLoader } from '../js/libs/GLTFLoader.js';
 import { OrbitControls } from '../js/libs/OrbitControls.js';
-import Stats from '../js/libs/stats.module.js';
 
-let camera, renderer, scene, stats, controls;
+let camera, renderer, scene, controls;
 let isLoadingModel;
 let markerGroup, directionalLight;
 let currentModelIndex = -1;
@@ -158,7 +157,7 @@ function pickup(){
         // .set(0, 0, 0);
         controls.target.set( 0, 0, 0);
         controls.update();
-        pickUpButton.textContent = "放下";
+        pickUpButton.textContent = "落";
     }
      
 }
@@ -176,7 +175,7 @@ function putdown(){
         camera.up = new THREE.Vector3(0,1,0);
         camera.lookAt(new THREE.Vector3(0,0,0));
         currentModelIndex = -1;
-        pickUpButton.textContent = "拾起";
+        pickUpButton.textContent = "拾";
         scene.remove(model);
         //model.dispose();
     }
@@ -260,13 +259,13 @@ function update(){
         return;
     if( isAR ){
         // console.log("isAR" + currentModelIndex + markerGroup.getObjectByName("model").visible + JSON.stringify(markerGroup.getObjectByName("model").position) + JSON.stringify(markerGroup.getObjectByName("model").scale));
-        pickUpButton.textContent = "拾起";
+        pickUpButton.textContent = "拾";
         pickUpButton.removeEventListener("click", pickup);
         pickUpButton.removeEventListener("click", putdown);
         pickUpButton.addEventListener("click", pickup);
     }else if(is3D){
         // console.log("is3D");
-        pickUpButton.textContent = "放下";
+        pickUpButton.textContent = "落";
         pickUpButton.removeEventListener("click", putdown);
         pickUpButton.removeEventListener("click", pickup);
         pickUpButton.addEventListener("click",  putdown);
