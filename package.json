@@ -4,7 +4,8 @@
   "description": "nodejs backend for render_server_test",
   "main": "index.js",
   "scripts": {
-    "start": "http-server"
+    "start": "http-server",
+    "start-prod": "http-server ./production"
   },
   "author": "",
   "license": "ISC",
