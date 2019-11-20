@@ -53,16 +53,17 @@ width: 5%;
 
 .app-download-btn {
   position: absolute;
-  display: block;
+  display: inline-block;
   background: transparent;
-  background-size: 40px 40px;
-  width:40px;
-  height:40px;
+  height: 40px;
+  width: 40px;
   border-radius:20px;
   border: 2px #ffffff solid;
   left: 80%;
   top: 90%;
+  padding: 0px;
   font-size:18px;
+  text-align: center;
   font-family: STSong;
   color: #ffffff;
   visibility: hidden
